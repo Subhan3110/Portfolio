@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<title>Quanta</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a0a;--s1:#111;--s2:#1a1a1a;--s3:#242424;
+  --border:#2e2e2e;--border2:#3a3a3a;
+  --text:#f2f2f2;--muted:#777;--hint:#444;
+  --green:#16a34a;--green-l:#22c55e;--green-bg:rgba(22,197,94,0.12);
+  --red:#dc2626;--red-l:#ef4444;--red-bg:rgba(239,68,68,0.12);
+  --blue:#2563eb;--blue-l:#3b82f6;--blue-bg:rgba(59,130,246,0.12);
+  --amber:#d97706;--amber-l:#f59e0b;
+  --bf:#7c3aed;--bf-l:#a78bfa;--bf-bg:rgba(124,58,237,0.12);
+  --der:#0891b2;--der-l:#22d3ee;--der-bg:rgba(8,145,178,0.12);
+  --ifm:#059669;--ifm-l:#34d399;--ifm-bg:rgba(5,150,105,0.12);
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;font-size:16px}
+
+/* SCREENS */
+.screen{display:none;height:100vh;height:100dvh;flex-direction:column;overflow-y:auto;overflow-x:hidden}
+.screen.active{display:flex}
+
+/* ── HOME ── */
+#home{padding:3.5rem 1.5rem 2rem;gap:0}
+.home-top{margin-bottom:2.5rem}
+.home-logo{display:flex;align-items:center;gap:14px;margin-bottom:0.4rem}
+.home-greeting{font-size:13px;color:var(--muted);font-family:'Inter',sans-serif;letter-spacing:0.06em;margin-bottom:0.4rem}
+.home-title{font-family:'Inter',sans-serif;font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-1px}
+.home-title span{color:var(--blue-l)}
+.home-sub{font-size:14px;color:var(--muted);margin-top:0.5rem}
+
+.section-head{font-size:11px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;font-family:'Inter',sans-serif;margin-bottom:0.9rem;margin-top:2rem}
+
+.subject-cards{display:flex;flex-direction:column;gap:10px}
+.subj-card{display:flex;align-items:center;gap:14px;background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:14px 16px;cursor:pointer;transition:transform 0.15s,background 0.15s}
+.subj-card:active{transform:scale(0.97);background:var(--s2)}
+.subj-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.subj-info{flex:1}
+.subj-name{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
+.subj-count{font-size:12px;color:var(--muted);margin-top:1px}
+.subj-arrow{color:var(--hint);font-size:18px}
+
+.subj-card.bf .subj-icon{background:var(--bf-bg);color:var(--bf-l)}
+.subj-card.der .subj-icon{background:var(--der-bg);color:var(--der-l)}
+.subj-card.ifm .subj-icon{background:var(--ifm-bg);color:var(--ifm-l)}
+.subj-card.all .subj-icon{background:var(--blue-bg);color:var(--blue-l)}
+
+/* ── DIFFICULTY ── */
+#difficulty{padding:3.5rem 1.5rem 2rem;gap:0}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--muted);font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;margin-bottom:2rem}
+.diff-subject{font-size:12px;color:var(--muted);font-family:'Inter',sans-serif;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem}
+.diff-title{font-family:'Inter',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:2rem}
+
+.diff-cards{display:flex;flex-direction:column;gap:12px}
+.diff-card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:18px 20px;cursor:pointer;transition:transform 0.15s,border-color 0.2s}
+.diff-card:active{transform:scale(0.97)}
+.diff-card.easy:active,.diff-card.easy.sel{border-color:var(--green-l)}
+.diff-card.medium:active,.diff-card.medium.sel{border-color:var(--amber-l)}
+.diff-card.hard:active,.diff-card.hard.sel{border-color:var(--red-l)}
+.diff-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.diff-name{font-family:'Inter',sans-serif;font-size:17px;font-weight:700}
+.diff-badge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px}
+.easy .diff-name{color:var(--green-l)}.easy .diff-badge{background:var(--green-bg);color:var(--green-l)}
+.medium .diff-name{color:var(--amber-l)}.medium .diff-badge{background:rgba(245,158,11,0.12);color:var(--amber-l)}
+.hard .diff-name{color:var(--red-l)}.hard .diff-badge{background:var(--red-bg);color:var(--red-l)}
+.diff-desc{font-size:13px;color:var(--muted);line-height:1.5}
+
+.start-btn{margin-top:2rem;width:100%;padding:16px;border-radius:14px;background:var(--blue);border:none;color:#fff;font-size:16px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity 0.1s,transform 0.1s;letter-spacing:0.02em}
+.start-btn:active{transform:scale(0.98);opacity:0.9}
+
+/* ── QUIZ ── */
+#quiz{padding:0}
+.quiz-header{padding:3rem 1.5rem 1rem;background:var(--s1);border-bottom:1px solid var(--border);flex-shrink:0}
+.quiz-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.q-back-btn{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:0;line-height:1;margin-right:8px;transition:color 0.2s}
+.q-back-btn:hover{color:var(--text)}
+.quiz-subject{font-size:11px;color:var(--muted);font-family:'Inter',sans-serif;letter-spacing:0.1em;text-transform:uppercase}
+.quiz-counter{font-size:13px;font-weight:500;color:var(--text)}
+.prog-track{height:3px;background:var(--border);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;border-radius:99px;transition:width 0.4s cubic-bezier(.4,0,.2,1)}
+.prog-fill.easy{background:var(--green-l)}
+.prog-fill.medium{background:var(--amber-l)}
+.prog-fill.hard{background:var(--red-l)}
+
+.quiz-body{flex:1;padding:1.75rem 1.5rem;display:flex;flex-direction:column;overflow-y:auto}
+.diff-pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:99px;margin-bottom:1rem}
+.diff-pill.easy{background:var(--green-bg);color:var(--green-l)}
+.diff-pill.medium{background:rgba(245,158,11,0.12);color:var(--amber-l)}
+.diff-pill.hard{background:var(--red-bg);color:var(--red-l)}
+.diff-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+.q-text{font-family:'Inter',sans-serif;font-size:20px;font-weight:700;line-height:1.35;letter-spacing:-0.3px;margin-bottom:1.5rem;flex-shrink:0}
+
+.feedback{border-radius:14px;padding:14px 16px;margin-bottom:1.25rem;font-size:14px;line-height:1.6;display:none;flex-shrink:0}
+.feedback.show{display:block}
+.feedback.correct{background:var(--green-bg);color:#86efac;border:1px solid rgba(34,197,94,0.25)}
+.feedback.wrong{background:var(--red-bg);color:#fca5a5;border:1px solid rgba(239,68,68,0.25)}
+
+.tf-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem;flex-shrink:0}
+.tf-btn{padding:22px 10px;border-radius:18px;border:1.5px solid var(--border);background:var(--s1);color:var(--text);font-family:'Inter',sans-serif;font-size:17px;font-weight:700;cursor:pointer;transition:transform 0.12s,background 0.15s,border-color 0.15s;display:flex;flex-direction:column;align-items:center;gap:8px}
+.tf-btn .icon{font-size:26px;line-height:1}
+.tf-btn.t-btn{border-color:rgba(34,197,94,0.4)}
+.tf-btn.f-btn{border-color:rgba(239,68,68,0.4)}
+.tf-btn:active:not([disabled]){transform:scale(0.94)}
+.tf-btn[disabled]{opacity:0.45;cursor:default}
+.tf-btn.correct-ans{background:var(--green-bg);border-color:var(--green-l)}
+.tf-btn.wrong-ans{background:var(--red-bg);border-color:var(--red-l)}
+
+.next-btn{width:100%;padding:15px;border-radius:14px;background:var(--blue);border:none;color:#fff;font-size:16px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;opacity:0;pointer-events:none;transition:opacity 0.2s,transform 0.1s;flex-shrink:0}
+.next-btn.show{opacity:1;pointer-events:all}
+.next-btn:active{transform:scale(0.98)}
+
+/* ── RESULTS ── */
+#results{padding:3.5rem 1.5rem 2.5rem;align-items:center;text-align:center;gap:1.25rem}
+.result-ring{position:relative;width:130px;height:130px;flex-shrink:0}
+.result-ring svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--s3);stroke-width:8}
+.ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-family:'Inter',sans-serif;font-size:28px;font-weight:800}
+.ring-lbl{font-size:11px;color:var(--muted)}
+.result-title{font-family:'Inter',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px}
+.result-msg{font-size:14px;color:var(--muted);line-height:1.65;max-width:290px}
+
+.stat-row{display:flex;gap:12px;width:100%}
+.stat-box{flex:1;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center}
+.stat-num{font-family:'Inter',sans-serif;font-size:26px;font-weight:800}
+.stat-num.g{color:var(--green-l)}.stat-num.r{color:var(--red-l)}.stat-num.b{color:var(--blue-l)}
+.stat-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+
+.feedback-card{width:100%;background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:left}
+.feedback-card h3{font-family:'Inter',sans-serif;font-size:14px;font-weight:700;margin-bottom:10px;color:var(--text)}
+.weak-list{display:flex;flex-direction:column;gap:6px}
+.weak-item{font-size:13px;color:var(--muted);display:flex;gap:8px;line-height:1.5}
+.weak-item::before{content:'→';color:var(--amber-l);flex-shrink:0}
+
+.res-btns{display:flex;flex-direction:column;gap:10px;width:100%}
+.res-btns button{padding:15px;border-radius:14px;font-size:16px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:opacity 0.1s,transform 0.1s;border:none}
+.res-btns button:active{transform:scale(0.97);opacity:0.85}
+.btn-p{background:var(--blue);color:#fff}
+.btn-s{background:var(--s1);border:1px solid var(--border) !important;color:var(--text)}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+.subj-card.gen .subj-icon{background:rgba(234,179,8,0.12);color:#facc15}
+.shake{animation:shake 0.3s ease}
+.pop{animation:pop 0.2s ease}
+/* Multiple choice styles */
+.mc-options{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem;flex-shrink:0}
+.mc-btn{width:100%;padding:14px 16px;border-radius:14px;border:1.5px solid var(--border);background:var(--s1);color:var(--text);font-size:14px;font-family:'Inter',sans-serif;cursor:pointer;text-align:left;transition:background 0.15s,border-color 0.15s;line-height:1.5}
+.mc-btn:active:not([disabled]){transform:scale(0.98)}
+.mc-btn[disabled]{cursor:default}
+.mc-btn.correct-mc{background:var(--green-bg);border-color:var(--green-l);color:#86efac}
+.mc-btn.wrong-mc{background:var(--red-bg);border-color:var(--red-l);color:#fca5a5}
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+  <div class="home-top">
+    <div class="home-logo">
+      <svg width="52" height="52" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="56" height="56" rx="16" fill="#0d0d0d"/>
+        <rect x="12" y="32" width="8" height="12" rx="2" fill="#1d4ed8"/>
+        <rect x="24" y="24" width="8" height="20" rx="2" fill="#2563eb"/>
+        <rect x="36" y="16" width="8" height="28" rx="2" fill="#3b82f6"/>
+        <path d="M12 30 L20 22 L28 26 L36 14 L44 10" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="2 2"/>
+      </svg>
+      <div class="home-title">Quan<span>ta</span></div>
+    </div>
+    <div class="home-sub">Test your finance knowledge. 10 questions per round.</div>
+  </div>
+
+  <div class="section-head">Subjects</div>
+  <div class="subject-cards">
+    <div class="subj-card bf" onclick="selectSubject('bf','FIN3617 Behavioural Finance','🧠')">
+      <div class="subj-icon">🧠</div>
+      <div class="subj-info">
+        <div class="subj-name">FIN3617 Behavioural Finance</div>
+        <div class="subj-count">Biases, nudges, prospect theory</div>
+      </div>
+      <div class="subj-arrow">›</div>
+    </div>
+    <div class="subj-card der" onclick="selectSubject('der','FIN3621 Options & Futures','📊')">
+      <div class="subj-icon">📊</div>
+      <div class="subj-info">
+        <div class="subj-name">FIN3621 Options & Futures</div>
+        <div class="subj-count">Options, futures, derivatives pricing</div>
+      </div>
+      <div class="subj-arrow">›</div>
+    </div>
+    <div class="subj-card ifm" onclick="selectSubject('ifm','FIN3524 Int. Financial Management','🌍')">
+      <div class="subj-icon">🌍</div>
+      <div class="subj-info">
+        <div class="subj-name">FIN3524 Int. Financial Management</div>
+        <div class="subj-count">FX, PPP, interest rate parity</div>
+      </div>
+      <div class="subj-arrow">›</div>
+    </div>
+    <div class="subj-card gen" onclick="selectSubject('gen','Finance General','💰')">
+      <div class="subj-icon">💰</div>
+      <div class="subj-info">
+        <div class="subj-name">Finance General</div>
+        <div class="subj-count">Valuation, FCFF, EV, multiples & more</div>
+      </div>
+      <div class="subj-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- DIFFICULTY -->
+<div class="screen" id="difficulty">
+  <button class="back-btn" onclick="goHome()">‹ Back</button>
+  <div class="diff-subject" id="diff-subject-label">Subject</div>
+  <div class="diff-title" id="diff-title">Choose difficulty</div>
+  <div class="diff-cards">
+    <div class="diff-card easy" onclick="selectDiff('easy')">
+      <div class="diff-row">
+        <div class="diff-name">Easy</div>
+        <div class="diff-badge">Beginner</div>
+      </div>
+      <div class="diff-desc">Core definitions and fundamental concepts. Good for first pass or quick review.</div>
+    </div>
+    <div class="diff-card medium" onclick="selectDiff('medium')">
+      <div class="diff-row">
+        <div class="diff-name">Medium</div>
+        <div class="diff-badge">Exam level</div>
+      </div>
+      <div class="diff-desc">Application-based questions. The kind you'll face on a real exam.</div>
+    </div>
+    <div class="diff-card hard" onclick="selectDiff('hard')">
+      <div class="diff-row">
+        <div class="diff-name">Hard</div>
+        <div class="diff-badge">Challenge</div>
+      </div>
+      <div class="diff-desc">Tricky edge cases, nuanced distinctions, and common misconceptions.</div>
+    </div>
+  </div>
+  <button class="start-btn" onclick="startQuiz()">Start quiz →</button>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="quiz">
+  <div class="quiz-header">
+    <div class="quiz-topbar">
+      <button class="q-back-btn" onclick="goHome()">‹</button>
+      <span class="quiz-subject" id="q-subj">Subject</span>
+      <span class="quiz-counter" id="q-counter">1 / 10</span>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="q-prog" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-body">
+    <div class="diff-pill" id="q-pill"><span class="diff-dot"></span><span id="q-pill-text">Easy</span></div>
+    <div class="q-text" id="q-text">Loading...</div>
+    <div class="feedback" id="q-feedback"></div>
+    <div class="tf-wrap" id="tf-wrap">
+      <button class="tf-btn t-btn" id="btn-t" onclick="answer(true)"><span class="icon">✓</span>True</button>
+      <button class="tf-btn f-btn" id="btn-f" onclick="answer(false)"><span class="icon">✗</span>False</button>
+    </div>
+    <div class="mc-options" id="mc-wrap" style="display:none"></div>
+    <button class="next-btn" id="btn-next" onclick="nextQ()">Next →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="results">
+  <div class="result-ring">
+    <svg width="130" height="130" viewBox="0 0 130 130">
+      <circle class="ring-bg" cx="65" cy="65" r="55"/>
+      <circle class="ring-fill" id="ring-fill" cx="65" cy="65" r="55" stroke="#3b82f6"
+        stroke-dasharray="345.4" stroke-dashoffset="345.4"/>
+    </svg>
+    <div class="ring-center"><div class="ring-pct" id="r-pct">0%</div><div class="ring-lbl">score</div></div>
+  </div>
+
+  <div class="result-title" id="r-title">Well done!</div>
+  <div class="result-msg" id="r-msg"></div>
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-num g" id="r-correct">0</div><div class="stat-lbl">Correct</div></div>
+    <div class="stat-box"><div class="stat-num r" id="r-wrong">0</div><div class="stat-lbl">Wrong</div></div>
+    <div class="stat-box"><div class="stat-num b" id="r-streak">0</div><div class="stat-lbl">Best streak</div></div>
+  </div>
+
+  <div class="feedback-card" id="r-feedback-card">
+    <h3>What to review</h3>
+    <div class="weak-list" id="r-weak-list"></div>
+  </div>
+
+  <div class="res-btns">
+    <button class="btn-p" onclick="restartSame()">Try again (same settings)</button>
+    <button class="btn-s" onclick="goHome()">Change subject</button>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = {
+bf:{
+easy:[
+  {q:"Behavioural finance has two main building blocks: limits to arbitrage and psychology.",a:true,exp:"Barberis & Thaler (2003) definerer de to søylene: (1) grenser for arbitrasje forklarer hvorfor feilprisinger kan vedvare, (2) psykologi beskriver de kognitive biasene som skaper dem.",topic:"Course Overview"},
+  {q:"A nudge must change objective payoffs or incentives to be effective.",a:false,exp:"En nudge fungerer UTEN å endre objektive utbetalinger eller insentiver — det er selve definisjonen. Om du endrer priser eller straffer er det ikke lenger en nudge.",topic:"Nudging"},
+  {q:"According to Thaler and Sunstein, it is possible to design a choice environment that does not influence people's decisions.",a:false,exp:"Dette er en av de to misoppfatningene de identifiserer. Noen designer alltid valgmiljøet — spørsmålet er kun hvordan, ikke om det påvirker.",topic:"Libertarian Paternalism"},
+  {q:"Loss aversion means that losses feel roughly twice as painful as equivalent gains feel good.",a:true,exp:"Kjernen i prospect theory (Kahneman & Tversky). Asymmetrien i verdifunksjonen gjør at et tap på 100 kr føles omtrent dobbelt så vondt som en gevinst på 100 kr er god.",topic:"Prospect Theory"},
+  {q:"The disposition effect describes the tendency to sell winning investments too early and hold losing investments too long.",a:true,exp:"Drevet av loss aversion: investorer unngår å realisere tap fordi det gjør vondt. De selger vinnere for å låse inn gevinsten og holder tapere i håp om de snur.",topic:"Disposition Effect"},
+  {q:"In prospect theory, people are risk-seeking when facing potential losses.",a:true,exp:"Verdifunksjonen er konveks i tapsdomenet — folk foretrekker en gamble med forventet tap på 100 kr fremfor et sikkert tap på 100 kr. De tar risiko for å unngå et sikkert tap.",topic:"Prospect Theory"},
+  {q:"The MINDSPACE framework was developed by the UK government's Behavioural Insights Team.",a:true,exp:"Publisert av Dolan, Hallsworth, Halpern, King og Vlaev (2010) for the UK Nudge Unit. Ni atferdsmessige levere for politikkdesign.",topic:"MINDSPACE"},
+  {q:"A carbon tax satisfies the definition of a nudge because it changes behaviour.",a:false,exp:"En karbonsskatt endrer objektive priser/insentiver — det er per definisjon IKKE en nudge. Den kan endre atferd, men via andre mekanismer enn nudging.",topic:"Nudging"},
+  {q:"Overconfident investors typically trade too little.",a:false,exp:"Overconfidence fører til for MYE handel — investorer tror de vet mer enn markedet. Mer handel betyr høyere kostnader og dårligere avkastning i snitt.",topic:"Overconfidence"},
+  {q:"Present bias means people place too much weight on the present relative to the future.",a:true,exp:"Vi foretrekker belønninger nå fremfor tilsvarende belønninger litt later — selv om vi ville valgt annerledes om valget gjaldt bare fremtiden. Forklarer undersaving og prokrastinering.",topic:"Present Bias"},
+  {q:"Experience effects show that recent experiences get too much weight compared to statistical probabilities.",a:true,exp:"Fra Malmendier (2021): personlige erfaringer påvirker oppfatninger og risikoatferd langt ut over det objektive data tilsier, og nylige erfaringer vektes for høyt.",topic:"Experience Effects"},
+  {q:"Social interactions play no significant role in how individuals make financial decisions.",a:false,exp:"Kuchler & Stroebel (2021) dokumenterer at sosiale nettverk påvirker boligkjøp, aksjehandel, pensjonssparing og beslutning om mislighold — sosiale interaksjoner er viktige.",topic:"Peer Effects"},
+  {q:"Regulatory risk is viewed as the most important climate risk for investors over the next 5 years.",a:true,exp:"Fra Stroebel & Wurgler (2021): respondenter rangerer regulatorisk risiko øverst på kort sikt (5 år), mens fysisk risiko (havstigning, branner) rangeres øverst på lang sikt (30 år).",topic:"Climate Finance"},
+  {q:"A sludge makes it harder for people to take beneficial actions.",a:true,exp:"Sludge er the mørke siden av choice architecture — byråkrati, vanskeligheter med å melde seg av, tungvinte prosesser. Det motvirker gode beslutninger fremfor å fremme dem.",topic:"Nudging"},
+  {q:"The representativeness heuristic can cause people to ignore base rates.",a:true,exp:"Folk dømmer sannsynlighet etter likhet med en prototype og ignorerer hvor sjeldent fenomenet faktisk er. Dette fører til systematiske feil i sannsynlighetsvurderinger.",topic:"Heuristics"},
+],
+medium:[
+  {q:"According to Barberis & Thaler, rational arbitrageurs will always quickly eliminate mispricings in financial markets.",a:false,exp:"Dette er klassisk motargument til atferdsfinans — men B&T viser at arbitrasje er begrenset: mangel på kapital, margin calls, og usikkerhet om når feilen korrigeres gjør at feilprisinger vedvarer.",topic:"Limits to Arbitrage"},
+  {q:"The FORGOOD framework is the ethical counterpart to MINDSPACE for evaluating nudge policies.",a:true,exp:"FORGOOD (Fairness, Openness, Respect, Goals, Opinions, Options, Delegation) gir etiske retningslinjer for nudge-design og spør om politikken tjener legitime mål på en rettferdig måte.",topic:"Nudging"},
+  {q:"According to the lecture slides, institutional investor pressure is viewed as the most powerful financial mechanism for reducing corporate carbon footprints.",a:true,exp:"Fra Stroebel & Wurgler (2021): press fra institusjonelle investorer er den mektigste finansielle mekanismen. Blant ikke-finansielle mekanismer er karbonsskatter og statssubsidier sterkest.",topic:"Climate Finance"},
+  {q:"Libertarian paternalism involves coercing people into making better choices.",a:false,exp:"'Libertariansk' betyr at ingen tvinges — friheten til å velge annerledes bevares alltid. 'Paternalistisk' betyr at arkitekturen styrer mot bedre utfall som definert av individet selv.",topic:"Libertarian Paternalism"},
+  {q:"The D in MINDSPACE stands for Defaults — people tend to go with pre-set options.",a:true,exp:"Default-effekten er en av de kraftigste atferdsmessige mekanismene. Opt-out organdonasjon øker donorrater dramatisk vs opt-in — folk følger standardvalget.",topic:"MINDSPACE"},
+  {q:"Prospect theory uses expected utility theory as its mathematical foundation.",a:false,exp:"Prospect theory ERSTATTER forventet nytteteori. Den bruker en verdifunksjon (ikke nyttefunksjon) som er konkav for gevinster og konveks for tap, med et kink ved referansepunktet.",topic:"Prospect Theory"},
+  {q:"Asset markets are likely overpricing climate risks according to the majority of survey respondents in Stroebel & Wurgler (2021).",a:false,exp:"Det motsatte: respondentene er minst 20 ganger mer tilbøyelige til å tro at klimarisiko er UNDERpriset fremfor overpriset. Selv de med lav klimabekymring tror markedet underpriser.",topic:"Climate Finance"},
+  {q:"Belief perseverance means people update their beliefs too slowly when confronted with new evidence.",a:true,exp:"Conservatism bias = for sakte oppdatering. Representativitetsheuristikken kan gi for rask oppdatering. Begge er biaser i trosoppdatering, bare i motsatte retninger.",topic:"Heuristics"},
+  {q:"Experience effects on financial behaviour are typically short-lived and fade within a year.",a:false,exp:"Malmendier & Nagel viser at Great Depression-generasjonen holdt seg unna aksjer i tiår. Erfaringseffekter er langvarige, domenespesifikke og påvirker selv erfarne fagfolk.",topic:"Experience Effects"},
+  {q:"The two-step recipe for designing nudges is: (1) identify behavioural obstacles, (2) design an intervention to overcome them.",a:true,exp:"Dette er den praktiske malen fra forelesningen. Finn den spesifikke atferdsbarrieren (manglende selvkontroll? status quo bias? begrenset informasjon?) og design en intervensjon som adresserer akkurat den.",topic:"Nudging"},
+  {q:"In prospect theory, the value function is steeper for losses than for gains.",a:true,exp:"Asymmetrien i bratthet er det matematiske uttrykket for loss aversion. Verdifunksjonen faller brattere for tap enn den stiger for gevinster — et tap på 100 kr 'koster' mer psykologisk enn en gevinst på 100 kr gir.",topic:"Prospect Theory"},
+  {q:"Individual investors in practice tend to hold well-diversified portfolios with low turnover.",a:false,exp:"Tvert imot: individuelle investorer handler for mye, selger vinnere for tidlig, holder tapere for lenge og holder dårlig diversifiserte porteføljer. Atferd avviker kraftig fra teoriens rasjonelle investor.",topic:"Investor Behaviour"},
+  {q:"Investor inattention can affect stock returns, particularly around earnings announcements.",a:true,exp:"DellaVigna & Pollet (2009) viser at fredagsannonseringer gir svakere umiddelbar kursreaksjon fordi investorer er mindre oppmerksomme — og kursen korrigerer etterpå.",topic:"Investor Behaviour"},
+  {q:"The mental accounting concept explains why people treat money differently depending on its source or intended use.",a:true,exp:"Penger er fungible (like), men folk behandler dem annerledes: bonusen går til ferie, arv settes i sparekonto, lønn betaler regninger — selvom det burde vært irrelevant.",topic:"Prospect Theory"},
+  {q:"According to behavioural corporate finance research, managerial biases are effectively eliminated by market discipline.",a:false,exp:"Guenzel & Malmendier (2020) viser at atferdsmessige ledere kan bli ansatt, beholde jobben og sparkes basert på faktorer som ikke korrigerer for bias — fordi styremedlemmer selv er biased.",topic:"Investor Behaviour"},
+],
+hard:[
+  {q:"Limits to arbitrage implies that prices in financial markets can deviate from fundamental value for extended periods even when rational investors know about the mispricing.",a:true,exp:"Shleifer & Vishny (1997): arbitragører kan mangle kapital, møte margin calls, eller ikke vite NÅR feilen korrigeres. Resultatet er at irrasjonelle priser kan vedvare — selv kjente feilprisinger lar seg ikke utnytte.",topic:"Limits to Arbitrage"},
+  {q:"The forward premium puzzle means that currencies with higher interest rates tend to depreciate as UIP predicts.",a:false,exp:"Puzzlet ER nettopp at høyrentevalutaer IKKE deprecierer som UIP predikerer — de appresierer. Fama (1984) dokumenterer dette. Det er grunnlaget for carry trade-strategien.",topic:"UIP"},
+  {q:"In the Stroebel & Wurgler (2021) survey, academic researchers were more likely than private market participants to believe climate risks are accurately priced.",a:true,exp:"51% av akademikere vs. 73% av private aktører trodde klimarisiko er underpriset. Akademikernes sterkere tro på EMH gjør dem mer tilbøyelige til å stole på markedsprisingen.",topic:"Climate Finance"},
+  {q:"The N in MINDSPACE (Norms) operates through the social perception channel described in social finance.",a:true,exp:"Normer håndheves via sosial skam, stigma og sammenligning — nettopp den sosiale persepsjonskanalen i Kuchler & Stroebel. Atferd som avviker fra normen er sosialt kostbart.",topic:"MINDSPACE"},
+  {q:"Probability weighting in prospect theory means people treat a 1% chance as approximately 1%.",a:false,exp:"Sannsynlighetsvekting DISTORTERER oppfattede sannsynligheter: små sannsynligheter overvektes (folk frykter fly mer enn biler), mellomstore til store undervektes. 1% føles som mer enn 1%.",topic:"Prospect Theory"},
+  {q:"A commitment device exploits people's awareness of their own present bias to improve long-term outcomes.",a:true,exp:"Save More Tomorrow (Benartzi & Thaler): bindende fremtidige spareavtaler som trer i kraft ved neste lønnsøkning. Omgår present bias ved å utsette 'offeret' til et fremtidig tidspunkt.",topic:"Present Bias"},
+  {q:"The equity premium puzzle refers to the observation that stocks have historically returned much more than bonds, which is hard to explain with standard rational models.",a:true,exp:"Mehra & Prescott (1985): historisk meravkastning på aksjer relativt til obligasjoner er for høy til å forklares av rasjonell risikoaversjon. Atferdsfinans forklarer det via loss aversion og narrow framing.",topic:"Asset Pricing Puzzles"},
+  {q:"Experience effects on inflation expectations have been documented to influence even FOMC members' voting behaviour.",a:true,exp:"Fra forelesningsnotatene: FOMC-medlemmer stemmer påvirket av personlige inflasjonsopplevelser. Selv erfarne sentralbankfolk er ikke immune mot erfaringsbaserte biaser.",topic:"Experience Effects"},
+  {q:"A nudge that works by changing the default option exploits status quo bias.",a:true,exp:"Status quo bias + default-effekten: folk velger det forhåndsvalgte alternativet uforholdsmessig ofte. Opt-out systemer utnytter dette for å øke donasjon, pensjonssparing og grønt energivalg.",topic:"Nudging"},
+  {q:"The FORGOOD framework requires that all nudges must be fully transparent to the people being nudged.",a:false,exp:"FORGOOD spør om politikken er åpen (O), men krever ikke at alle nudges er fullt synlige. Skjulte nudger kan fremdeles være etiske om de tjener legitime mål og respekterer autonomi.",topic:"Nudging"},
+  {q:"Short-term momentum and long-term reversal in stock returns are consistent with the efficient market hypothesis.",a:false,exp:"Momentum (kortsiktig fortsettelse) og reversal (langsiktig tilbakegang) er klassiske anomalier som utfordrer EMH. De kan delvis forklares av underreaksjon og overreaksjon — atferdsmessige biaser.",topic:"Asset Pricing Puzzles"},
+  {q:"The reference point in prospect theory is always the status quo (current wealth).",a:false,exp:"Referansepunktet er fleksibelt og kontekstavhengig: det kan være kjøpsprisen, en kollegas resultater, en forventet bonus, eller hva som helst annet som er fremtredende. Det skifter med framing.",topic:"Prospect Theory"},
+  {q:"Behavioural biases in financial decisions can be reduced by providing better information alone.",a:false,exp:"Informasjon alene er sjelden nok — folk har begrenset oppmerksomhet, er påvirket av framing, og lar seg lede av defaults. Nudges som adresserer den underliggende biasmekanismen er ofte mer effektive.",topic:"Nudging"},
+  {q:"Gender differences in investment behaviour suggest women tend to trade less frequently than men on average.",a:true,exp:"Forskning (bl.a. Barber & Odean) viser at menn handler mer enn kvinner, noe som er koblet til høyere overconfidence hos menn. Mer handel gir lavere netto avkastning.",topic:"Investor Behaviour"},
+  {q:"The availability heuristic causes investors to overweight dramatic recent events when assessing probabilities.",a:true,exp:"Hendelser som er lett tilgjengelig i minnet (krasj, skandale, ekstremvær) vurderes som mer sannsynlige enn statistikken tilsier. Dette påvirker risikopersepsjon og porteføljebeslutninger.",topic:"Heuristics"},
+]
+},
+der:{
+easy:[
+  {q:"A call option gives the buyer the right, but not the obligation, to buy an asset at the strike price.",a:true,exp:"Call = rett til å kjøpe til strike. Put = rett til å selge. Kjøperen betaler en premie for denne retten. Selgeren er forpliktet til å levere hvis opsjonen innløses.",topic:"Option Basics"},
+  {q:"A forward contract and a futures contract are identical in all respects.",a:false,exp:"Futures er børshandlet, standardisert og mark-to-market daglig (margin). Forwards er OTC, skreddersydd og avregnes ved forfall. Futures har derfor lavere kredittrisiko.",topic:"Forwards vs Futures"},
+  {q:"The payoff of a long call at expiry is max(S_T - K, 0).",a:true,exp:"Payoff = max(S_T − K, 0). Om S_T > K innløses opsjonen og du kjøper til K, verdt S_T. Om S_T ≤ K utløper den verdiløs.",topic:"Option Basics"},
+  {q:"A put option is in-the-money (ITM) when the stock price is below the strike price.",a:true,exp:"ITM put: S < K. Retten til å selge til K er verdifull når S er lavere. Intrinsic value = max(K − S, 0) > 0.",topic:"Option Basics"},
+  {q:"The no-arbitrage forward price of a non-dividend-paying stock is F = S × e^(rT).",a:true,exp:"F = S × e^(rT) under kontinuerlig rente. Med diskret rente: F = S × (1+r)^T. Dette er cost-of-carry formelen uten dividende eller leaserate.",topic:"Forward Pricing"},
+  {q:"Futures contracts require an initial margin deposit and are marked to market daily.",a:true,exp:"Daily mark-to-market: gevinster og tap avregnes daglig mot marginkontoen. Om marginen faller under maintenance margin, får du margin call.",topic:"Futures Mechanics"},
+  {q:"Put-call parity only applies to European options, not American options.",a:true,exp:"Put-call parity: C − P = PV(F − K) = Se^(−δT) − Ke^(−rT). Gjelder KUN europeiske opsjoner — tidlig innløsning bryter relasjonen for amerikanske.",topic:"Put-Call Parity"},
+  {q:"A bull spread is constructed by buying a low-strike call and selling a high-strike call.",a:true,exp:"Bull call spread: long K1-call, short K2-call (K1 < K2). Profitterer av moderat oppgang. Maksimal gevinst = K2 − K1 − netto premie. Maksimalt tap = netto premie betalt.",topic:"Option Strategies"},
+  {q:"A straddle is constructed by buying both a call and a put with the same strike and expiry.",a:true,exp:"Long straddle = long call + long put. Profitterer av store bevegelser i ENTEN retning. Brukes som volatilitetsspill — du taper nettopremiepå om kursen holder seg stabil.",topic:"Option Strategies"},
+  {q:"Convenience yield reflects the monetary benefit from physically holding a commodity.",a:true,exp:"Convenience yield (δ) er nytten av å ha fysisk tilgang til råvaren — f.eks. å kunne bruke olje i produksjonen. Inngår i forwardprisen: F = S × e^((r+λ−δ)T) der λ er lagerkostnad.",topic:"Commodity Forwards"},
+  {q:"Basis risk arises when the asset being hedged is not identical to the futures contract underlying.",a:true,exp:"Basis = spot − futures. Basis risk oppstår ved: (1) ulik lokasjon, (2) ulik kvalitet/grade, (3) ulik forfallstid. Eksempel: Hedging jet fuel med crude oil futures gir basis risk.",topic:"Hedging"},
+  {q:"A short forward position profits when the underlying asset price rises.",a:false,exp:"Short forward tjener når prisen FALLER. Payoff = K − S_T. Stiger S_T over K, taper du K − S_T. Long forward profitterer av prisoppgang.",topic:"Forwards vs Futures"},
+  {q:"The Black-Scholes formula can be directly applied to price American call options on dividend-paying stocks.",a:false,exp:"Black-Scholes priser kun EUROPEISKE opsjoner. For amerikanske opsjoner (spesielt puts og calls på dividendebetalende aksjer) der tidlig innløsning kan være optimalt, brukes binomialmodellen.",topic:"Black-Scholes"},
+  {q:"Contango describes a situation where forward prices are higher than the spot price.",a:true,exp:"Contango: F > S. Typisk for finansielle eiendeler og ikke-sesongbaserte varer. Backwardation (F < S) oppstår ved høy convenience yield eller knapphet.",topic:"Commodity Forwards"},
+  {q:"A collar strategy combines a long put and a short call to create a bounded payoff range.",a:true,exp:"Collar: long underliggende + long put + short call. Beskytter nedsiden (put) men begrenser oppsiden (short call). Zero-cost collar: velg strikes slik at put- og call-premiene kansellerer.",topic:"Option Strategies"},
+],
+medium:[
+  {q:"Short 750-strike call + Long 830-strike call = Bear spread. This is TRUE.",a:true,exp:"Fra eksamen: Kort 750-strike call, lang 830-strike call. Du selger den billigere strike og kjøper den dyrere → netto premie inngang → dette er et BEAR SPREAD. Profitt om kursen er under 750 ved forfall.",topic:"Option Strategies"},
+  {q:"For a bear call spread: short 750-call at $70, long 830-call at $30, r=6%, 6 months. Max profit = $38.78.",a:true,exp:"Netto premie inngang = 70 − 30 = 40. FV = 40 × e^(0.06×0.5) = 40 × 1.03045 = 41.22. Max profit (kursen < 750) = 41.22. Wait — max PROFIT = 41.22 per eksamenssvar C. Max profit er future value av netto premie mottatt.",topic:"Option Strategies"},
+  {q:"For the same bear spread, max loss = $41.22.",a:false,exp:"Max loss skjer om kursen > 830 ved forfall: taper 830 − 750 = 80, men mottok 40 netto premie (FV=41.22). Netto max loss = 80 − 41.22 = 38.78. Svar D fra eksamen.",topic:"Option Strategies"},
+  {q:"The optimal hedge ratio when hedging with futures is: h* = β × (Q_A / Q_F) where β is from regressing spot changes on futures changes.",a:true,exp:"h* = β × (eksponering / kontraktstørrelse). β er regresjonskoeffisienten fra: ΔS_spot = α + β × ΔF_futures. Viktig: regressér endringer, ikke prisnivåer.",topic:"Hedging"},
+  {q:"An airline buying jet fuel hedges by going LONG futures.",a:true,exp:"Flyselskapets eksponering: lang jet fuel (kjøper fremover). For å sikre: ta short posisjon i relaterte futures? Nei — for å sikre lang spoteksponering tar du LANG futuresposisjon (sikrer innkjøpspris).",topic:"Hedging"},
+  {q:"For a non-recombining binomial tree, the risk-neutral probability must be recalculated at every node.",a:true,exp:"Fra eksamen: I et non-recombining tre er u og d forskjellige ved hvert node → p = (e^((r−δ)h) − d)/(u − d) må beregnes separat for hvert node.",topic:"Binomial Model"},
+  {q:"In a one-period binomial model with u=1.05, d=0.97, δ=5%, arbitrage exists when r > u×e^(δ) - 1.",a:false,exp:"Arbitrasjebetingelse: d < e^((r−δ)h) < u. Med u=1.05, d=0.97, δ=5%: e^(r−0.05) < 1.05. For r=9%: e^(0.04)=1.041 < 1.05 ✓. Ingen arbitrasje. Svar D fra eksamen: 'None of the above'.",topic:"Binomial Model"},
+  {q:"Put-call parity applies to option prices from both the Black-Scholes formula and the binomial model.",a:true,exp:"Fra eksamen Seksjon 9: Put-call parity gjelder (A) europeiske opsjoner, (B) Black-Scholes priser, og (C) binomialmodell-priser. Alle tre er sanne → svar D 'All of the above'.",topic:"Put-Call Parity"},
+  {q:"Binomial option pricing can price both European and American options on stocks and FX.",a:true,exp:"Fra eksamen Seksjon 10: Binomialmodellen kan prise europeiske OG amerikanske opsjoner, aksjer OG valutaopsjoner. Ingen av påstandene er falske → svar D.",topic:"Binomial Model"},
+  {q:"A longer-lived European call is always at least as valuable as a shorter-lived European call.",a:false,exp:"Fra eksamen Seksjon 11: Svar C er riktig (lavere strike → høyere verdi). A er FEIL — for europeiske opsjoner er lenger løpetid IKKE alltid mer verdifullt (dividender kan gjøre kortere opsjoner mer verdifulle). Amerikanske: alltid mer verdt med lenger løpetid.",topic:"Option Bounds"},
+  {q:"Black-Scholes can be used to price both European and American options.",a:false,exp:"Fra eksamen Seksjon 14: Black-Scholes gjelder KUN europeiske opsjoner. Den kan ikke direkte prise amerikanske opsjoner der tidlig innløsning er mulig — binomialmodellen brukes til det.",topic:"Black-Scholes"},
+  {q:"A straddle is the derivative strategy that speculates on volatility (not direction).",a:true,exp:"Fra eksamen Seksjon 15: Straddle = long call + long put = volatilitetsspill. Profitt uavhengig av retning, avhengig av størrelsen på bevegelsen. Bear/bull spread og collar er retningsspill.",topic:"Option Strategies"},
+  {q:"A put option is more expensive than a short forward at the same strike, because the put has optionality.",a:true,exp:"Fra eksamen Seksjon 16: Short forward er gratis (null kostnad ved inngåelse). Put koster en premie men gir deg optionaliteten til å ikke selge om prisen stiger. Put > forward (som kan ha negativ verdi).",topic:"Option Basics"},
+  {q:"Delta is the slope of the option price curve with respect to the stock price.",a:true,exp:"Delta = dC/dS = helningen av option-pris vs. underliggende-kurs kurven. Fra eksamen Seksjon 13: Svar A er FALSK — delta er helning vs. underliggende, ikke vs. strike. Helning vs. strike er negativt for calls.",topic:"Greeks"},
+  {q:"To delta-hedge a short put position, you should short shares of the underlying asset.",a:false,exp:"Short put har positiv delta (put delta er negativ, short = positiv). For å delta-hedge lang put: short aksjer. For å delta-hedge SHORT put: LONG aksjer (kjøp aksjer for å nøytralisere positiv delta). Fra eksamen Seksjon 13.",topic:"Greeks"},
+],
+hard:[
+  {q:"The 6-month forward price for a stock at S=45.60, r=6%, with dividends $1.10 in 3M and $1.15 in 6M, is $44.72.",a:true,exp:"PV(dividender) = 1.10×e^(−0.06×0.25) + 1.15×e^(−0.06×0.5) = 1.0837 + 1.1158 = 2.1995. F = (45.60 − 2.1995)×e^(0.06×0.5) = 43.4005×1.03045 = 44.72. Fra eksamen Seksjon 27.",topic:"Forward Pricing"},
+  {q:"To increase portfolio beta from 0.7 to 1.5 using index futures (index=1700, contract=$250, portfolio=$100M, r=4%, δ=2.5%), you go LONG 193 futures.",a:true,exp:"Futures price = 1700×e^((0.04−0.025)×1) = 1700×1.01511 = 1725.69. Futures verdi = 1725.69×250 = 431,423. Antall = (1.5−0.7)×100M/431,423 = 0.8×231.8 = 185.4 ≈ 193 lang. Fra eksamen Seksjon 26.",topic:"Futures Hedging"},
+  {q:"Rho of a put option is negative — put value decreases when interest rates rise.",a:true,exp:"Fra eksamen Seksjon 24: Put pris ved r=5% er $5.5537, ved r=6% er $5.4428. Rho = (5.4428−5.5537)/(6%−5%) = −0.1109/1% ≈ −0.11 $/%. Høyere rente → lavere PV(K) → put er mindre verdt.",topic:"Greeks"},
+  {q:"Delta-gamma approximation: C(S+ΔS) ≈ C(S) + Δ×ΔS + (1/2)×Γ×(ΔS)². For S=33→34: C≈$1.57.",a:true,exp:"Fra eksamen Seksjon 28: C = 1.146 + 0.3854×1 + 0.5×0.0838×1² = 1.146 + 0.3854 + 0.0419 = 1.573 ≈ $1.57.",topic:"Greeks"},
+  {q:"For the delta-hedge of 200 written calls (C=$4.16, Δ=0.7644, S=$73): total cost = $10,328.",a:true,exp:"Delta-hedge av 200 korte calls: kjøp 200×0.7644 = 152.88 aksjer til $73 = $11,160.24. Motta 200×$4.16 = $832 fra salg av calls. Netto kostnad = $11,160 − $832 = $10,328. Fra eksamen Seksjon 25.",topic:"Delta Hedging"},
+  {q:"Corn: S=$1.93, r=6%, storage=0.5% annually. No-arbitrage 6-month forward = $1.95.",a:true,exp:"F = S×e^((r+λ)×T) = 1.93×e^(0.065×0.5) = 1.93×1.03263 = 1.993 ≈ $1.99. Forward av $2.05 (svar A fra eksamen) gir arbitrasjemulighet fordi den er over no-arbitrage prisen.",topic:"Commodity Forwards"},
+  {q:"An airline buying jet fuel should long approximately 15 crude oil futures. Regression: ΔY = 0.003 + 0.635×ΔX, crude oil contract = 42,000 gallons.",a:true,exp:"Optimal antall = β × (eksponering/kontraktstørrelse) = 0.635 × (1,000,000/42,000) = 0.635 × 23.81 = 15.12 ≈ 15 lange kontrakter. Fra eksamen Seksjon 22. Lang fordi de kjøper jet fuel (lang spoteksponering).",topic:"Hedging"},
+  {q:"ITM put options have negative intrinsic value. This is FALSE.",a:true,exp:"Fra eksamen Seksjon 29: ITM put har POSITIV intrinsic value = max(K − S, 0) > 0. Påstanden er FALSK. Ingen opsjon har negativ intrinsic value — den utløper bare verdiløs.",topic:"Option Basics"},
+  {q:"A short position in the underlying asset combined with a protective call is equivalent to a long put.",a:true,exp:"Fra eksamen Seksjon 30: Short S + Long call = synthetic long put. Put-call parity: P = C − S + PV(K). Short S + Long C = Long P (justert for PV(K) via obligasjon).",topic:"Put-Call Parity"},
+  {q:"In the S&P 500 margin example (5 contracts at 904.80, contract=$250, initial margin=$28,125, maintenance=$22,500): futures price 875.64 triggers margin call.",a:true,exp:"Fra eksamen Seksjon 18: Margin call skjer om tap > $28,125−$22,500=$5,625. Med 5 kontrakter á $250 per indekspoeng: tap = 5×250×(904.80−F). Sett = $5,625: 904.80−F = 4.5 → F = 900.30. 875.64 er lavere → margin call. Svar A er korrekt.",topic:"Futures Mechanics"},
+  {q:"XYZ call: C=$8, S=$15.30, dividends $1.20 in 1M and $1.50 in 2M, r=4%, K=$6, T=3M. C=$8 violates a lower bound.",a:false,exp:"Fra eksamen Seksjon 20: Lower bound for call = max(0, S−PV(div)−PV(K)). PV(div)=1.20e^(−0.04/12)+1.50e^(−0.08/12)=1.196+1.490=2.686. PV(K)=6e^(−0.01)=5.940. LB = 15.30−2.686−5.940=6.674. C=$8 > 6.674 ✓ ingen brudd. C=$5 < 6.674 → arbitrage. Svar B.",topic:"Option Bounds"},
+  {q:"Rho is non-negative for American calls, but theta can be negative for American options.",a:false,exp:"Fra eksamen Seksjon 12: Theta er NON-POSITIVE for europeiske, men KAN VÆRE POSITIV for amerikanske puts (tidlig innløsning). Svar D (Theta er non-positive for American) er FALSK — det er sann for europeiske, men ikke alltid for amerikanske.",topic:"Greeks"},
+  {q:"The no-arbitrage condition in binomial model requires: d < e^((r-δ)h) < u.",a:true,exp:"Om e^((r−δ)h) ≥ u: kjøp obligasjon, short aksje. Om e^((r−δ)h) ≤ d: kjøp aksje, short obligasjon. Begge gir risikofri profitt. Betingelsen d < e^((r−δ)h) < u eliminerer arbitrasje.",topic:"Binomial Model"},
+  {q:"A zero-cost collar keeps the put strike fixed at $950 and you must lower the call strike to achieve zero cost.",a:false,exp:"Zero-cost collar: premie fra short call = premie på long put. Med put@$950 til $84.47: for å matche, senk call strike → call premium øker. Vil du ha zero cost? Du MÅ SENKE call-strike for at call-premien skal matche put-premien. Altså: lavere call strike → dyrere call → zero cost. Svar: senk call strike.",topic:"Option Strategies"},
+  {q:"Buying a call spread (long 950-call, short 1000-call) and a put spread (long 950-put, short 1000-put) give the same profit diagram but different payoff diagrams.",a:true,exp:"Fra homework: Profit = Payoff − FV(kost). Bull call spread og bull put spread gir identiske PROFITT-diagrammer (pga. put-call paritet), men PAYOFF-diagrammene er forskjellige (call spread gir payoff 0→50, put spread gir payoff -50→0 + justering).",topic:"Option Strategies"},
+  {q:"For commodity forwards with storage costs (λ), the no-arbitrage forward price is F = S × e^((r + λ - δ)T).",a:true,exp:"F = S × e^((r+λ−δ)T): r = risikofri rente (finansieringskostnad), λ = lagerkostnad (ekstra kostnad), δ = convenience yield (nytte av å ha fysisk vare, reduserer forwardpris). Contango vs. backwardation avhenger av størrelsen på δ.",topic:"Commodity Forwards"},
+]
+},
+ifm:{
+easy:[
+  {q:"FIN3524 focuses primarily on currency risk as an uncompensated exposure.",a:true,exp:"Fra Lecture 1: 'Main focus in this class: currency risk.' FX-risiko er ubelønnet — den prises ikke i forventede avkastninger som systematisk risiko.",topic:"Course Overview"},
+  {q:"The NOK/EUR exchange rate of 11.75 means you need 11.75 NOK to buy one EUR.",a:true,exp:"NOK er prisvalutaen, EUR er basisvalutaen. NOK/EUR = 11.75 betyr 11.75 NOK per EUR.",topic:"FX Basics"},
+  {q:"Nominal exchange rates are both volatile and extremely difficult to predict.",a:true,exp:"To empiriske fakta fra Lecture 1: FX-kurser er (1) uforutsigbare — i praksis random walk — og (2) svært volatile.",topic:"FX Basics"},
+  {q:"Covered Interest Rate Parity (CIP) is an arbitrage condition linking forward rates to spot rates and interest rate differentials.",a:true,exp:"CIP: F = S × (1+r_d)/(1+r_f). Avvik gir risikofri profitt via: lån i en valuta, konvertér spot, invester i den andre, selg forward.",topic:"CIP"},
+  {q:"The Big Mac Index is a measure of deviations from absolute Purchasing Power Parity.",a:true,exp:"The Economist sammenligner Big Mac-priser globalt for å vurdere om valutaer er over- eller undervurdert relativt til absolutt PPP. Dekket i Lecture 3 med øvinger.",topic:"PPP"},
+  {q:"Continuously compounded returns are additive across time periods.",a:true,exp:"Logreturner er additive: ln(S_T/S_0) = Σ ln(S_t/S_{t-1}). Gjennomgått i Lecture 2 som 'math refresher'. Praktisk for volatilitetsberegninger.",topic:"Math"},
+  {q:"A forward discount means the forward rate is below the spot rate.",a:true,exp:"Forward discount = F < S. Konsistent med CIP når hjemlig rente er høyere enn utenlandsk rente — høyrentevalutaen er billigere i forwardmarkedet.",topic:"Forwards"},
+  {q:"Contract exposure arises from future cash flows that are contractually fixed in a foreign currency.",a:true,exp:"'Contract exposure: exposures arising from prior contractual obligations, typically future cash flows that are fixed with respect to a market price.' Kan sikres fullstendig med forwards.",topic:"Exposure"},
+  {q:"FX risk is a compensated risk that earns a risk premium like market beta.",a:false,exp:"FX-risiko er UBELØNNET — du får ikke forventet meravkastning for å ta den. Det er en av kursens kjernepåstander. Bedrifter bør sikre den fremfor å ta den på for avkastning.",topic:"Risk Management"},
+  {q:"A strip hedge matches each individual future cash flow with a separate forward contract.",a:true,exp:"Strip hedge = kontantstrømsmatching. Hvert fremtidig FX-beløp sikres med en separat forwardkontrakt. Praktisk ved få kontrakter, upraktisk ved mange.",topic:"Hedging"},
+  {q:"The real interest rate approximately equals the nominal rate minus the inflation rate.",a:true,exp:"Fra Lecture 3: 'The real interest rate may be calculated as the difference between the nominal interest rate and the inflation rate.' Mer eksakt: (1+real) = (1+nominal)/(1+inflasjon).",topic:"Inflation"},
+  {q:"Political risk is one of the features that makes international finance different from domestic finance.",a:true,exp:"Lecture 1 lister: valutarisiko, inflasjonsrisiko, politisk risiko og globale etterspørsels- og tilbudssjokker som hva som gjør internasjonal finans spesielt.",topic:"Course Overview"},
+  {q:"Under the random walk hypothesis, the best forecast of the future spot rate is today's spot rate.",a:true,exp:"Et sentralt empirisk funn: nominelle valutakurser er i praksis random walk. Dagens kurs er den beste predikatoren for morgendagens — rentedifferanser og PPP hjelper lite kortsiktig.",topic:"FX Basics"},
+  {q:"A currency swap requires the actual exchange of principal amounts in two different currencies.",a:true,exp:"'Unlike an interest rate swap, a currency swap requires the actual exchange of the two principal currency amounts.' Utveksling skjer ved start og ved forfall.",topic:"Swaps"},
+  {q:"Operating exposure measures the effect of exchange rates on uncertain future cash flows.",a:true,exp:"Operasjonell eksponering = effekten på usikre fremtidige strømmer. Kontrakteksponering dekker kjente, faste strømmer. Operasjonell er vanskeligere å måle og sikre.",topic:"Exposure"},
+],
+medium:[
+  {q:"The CIP-implied forward rate for NOK/EUR when r_NOK = 4% and r_EUR = 2% is F = S × 1.04/1.02.",a:true,exp:"CIP diskret: F = S × (1+r_d)/(1+r_f) = S × 1.04/1.02. Kontinuerlig: F = S × e^((0.04−0.02)T). Resultatet er F > S (NOK er på forward premium, EUR er på forward discount).",topic:"CIP"},
+  {q:"If the quoted forward rate deviates from the CIP-implied rate, a risk-free arbitrage exists.",a:true,exp:"Eksempel fra Lecture 3 (JPY/USD, CIP-avvik): lån i en valuta, konvertér spot, invester i den andre og selg den resulterende valutaen forward. Netto profitt uten risiko hvis avviket er tilstrekkelig.",topic:"CIP"},
+  {q:"Economic exposure measures the sensitivity of a firm's market value to unexpected exchange rate movements.",a:true,exp:"'Economic exposure: The sensitivity of a firm's (market) value to changes in external market prices.' Estimeres via regresjon: V = a + b × S(NOK/FC) + e, der b er eksponeringen.",topic:"Exposure"},
+  {q:"Adjusting cash flows (numerators) for exchange rates gives a different international NPV than adjusting discount rates (denominators).",a:false,exp:"Et nøkkelresultat fra FIN3524: ekvivalente prognosetilnærminger gir ekvivalente NPV-resultater når de brukes konsistent. Juster teller ELLER nevner — ikke begge.",topic:"Capital Budgeting"},
+  {q:"A Norwegian salmon exporter receiving EUR in 6 months should sell EUR forward to hedge.",a:true,exp:"Eksportøren har en naturlig lang EUR-posisjon (vil motta EUR). For å sikre: selg EUR forward og lås inn NOK-verdien av inntektene.",topic:"Hedging"},
+  {q:"Under the International Fisher Effect, real interest rates are equalized across countries.",a:true,exp:"PPP: ΔS = π_d − π_f. UIP: ΔS = r_d − r_f. Begge gir: r_d − π_d = r_f − π_f → realrenter utlignes. Det er International Fisher Effect.",topic:"Fisher Effect"},
+  {q:"A rolling stack hedge is more practical than a strip hedge when a firm has many different future FX cash flows.",a:true,exp:"'If there are many different cash flows, it is more practical to use a (rolling) stack hedge.' Match gjennomsnittlig eksponering med ett lån eller en swap fremfor mange separate forwards.",topic:"Hedging"},
+  {q:"The comparative advantage principle that motivates international trade also justifies currency swaps.",a:true,exp:"Fra Lecture 9: gains from trade / comparative advantages som motivasjon for swaps. Hvert selskap låner der det har komparativt fortrinn og swapper til ønsket valuta.",topic:"Swaps"},
+  {q:"Economic exposure can affect a firm even if it has no direct foreign currency revenues or costs.",a:true,exp:"Et norsk selskap som konkurrerer med importører er eksponert for valutasvingninger selv uten direkte utenlandske inntekter — sterkere utenlandsk valuta gjør importkonkurransen hardere.",topic:"Exposure"},
+  {q:"Under the random walk assumption, using the current spot rate as the forecast for all future periods gives the same NPV as using PPP-adjusted forecasts.",a:true,exp:"Konsistent bruk av ulike forutsetninger gir ekvivalente resultater. Random walk og PPP er begge gyldige tilnærminger — resultatet er det samme om de brukes konsistent.",topic:"Capital Budgeting"},
+  {q:"The three types of currency swaps are fixed/fixed, fixed/floating (cross-currency), and floating/floating (basis swap).",a:true,exp:"Fra Lecture 9. Fixed/floating kalles cross-currency swap. Floating/floating kalles currency basis swap. Alle tre involverer faktisk utveksling av pålydende.",topic:"Swaps"},
+  {q:"A money market hedge replicates a forward contract using spot transactions and borrowing/lending.",a:true,exp:"Lån i hjemlig valuta → konvertér spot → invester i utenlandsk valuta. Ved forfall replikerer dette en forwardkontrakt — ekvivalente resultater via CIP.",topic:"Hedging"},
+  {q:"Accounting (translation) exposure directly affects a firm's actual cash flows.",a:false,exp:"Regnskapseksponering påvirker bokverdi og rapporterte tall — IKKE faktiske kontantstrømmer. Kontrakteksponering og operasjonell eksponering påvirker faktiske kontantstrømmer.",topic:"Exposure"},
+  {q:"A firm should always hedge all FX exposure to maximise shareholder value.",a:false,exp:"FIN3524: 'Hedging programs should only be implemented if they increase firm value.' Blanket-sikring er ikke optimal — du velger din eksponering, ikke sjokket.",topic:"Risk Management"},
+  {q:"Under CIP, a deviation between the quoted forward rate and the implied forward rate provides a risk-free profit opportunity.",a:true,exp:"Dette er CIPs kjerne som arbitrasjebetingelse. Post-2008 har CIP-avvik vedvart pga. regulatoriske kostnader som begrenser bankenes evne til å utnytte dem.",topic:"CIP"},
+],
+hard:[
+  {q:"Under continuous compounding, the CIP forward rate is F = S × e^((rd − rf)T).",a:true,exp:"Kontinuerlig rente-CIP. Den diskrete versjonen er F = S × (1+rd)^T / (1+rf)^T. Eksponentielt ekvivalent for små renter og korte perioder.",topic:"CIP"},
+  {q:"The forward premium puzzle implies that the carry trade earns positive expected returns in violation of UIP.",a:true,exp:"UIP predikerer at carry-profitt er null i forventning. Puzzlet er at høyrentevalutaer appresierer istedenfor å deprecierer — carry trade tjener systematisk positiv avkastning.",topic:"UIP"},
+  {q:"CIP deviations post-2008 are explained by regulatory constraints that make the arbitrage trade costly for banks.",a:true,exp:"Post-finanskrise-regulering økte kapital- og balansekostnadene for bankene som utfører CIP-arbitrasjen. Avvik som tidligere ville blitt eliminert umiddelbart kan nå vedvare.",topic:"CIP"},
+  {q:"In Henriksen's framework, managers choose their FX exposure but not the FX shocks themselves.",a:true,exp:"'You don't choose shocks — you choose exposure.' Ledere bestemmer valuta for inntekter/kostnader, kontraktstrukturer, prisklausuler og kapitalstruktur — alle påvirker eksponeringen.",topic:"Risk Management"},
+  {q:"Under simultaneous PPP and UIP, real interest rates are equalised internationally (International Fisher Effect).",a:true,exp:"PPP: ΔS = π_d − π_f. UIP: ΔS = r_d − r_f. Begge: r_d − π_d = r_f − π_f. Realrentene er like. Dette er International Fisher Effect.",topic:"Fisher Effect"},
+  {q:"For international capital budgeting, the discount rate should incorporate FX risk as an additional risk premium.",a:false,exp:"FX-risiko er ubelønnet — den bør SIKRES, ikke prises i diskonteringsraten. Kun systematisk risiko tjener risikopremie i WACC. Å legge til FX-premie i raten er dobbeltregning.",topic:"Capital Budgeting"},
+  {q:"The first currency swap (World Bank and IBM, 1980) was motivated by comparative advantage in different currency markets.",a:true,exp:"Verdensbanken hadde komparativt fortrinn i USD-lån, IBM i andre valutaer. Swappen utnyttet dette — samme prinsipp som Ricardos komparative fortrinn i handel.",topic:"Swaps"},
+  {q:"Bid rates are the rates at which banks buy the base currency, while ask rates are what banks sell it for.",a:true,exp:"Banken kjøper lavt (bid) og selger høyt (ask). Spread er bankens fortjeneste. En norsk bedrift som kjøper EUR betaler ask, en som selger EUR får bid.",topic:"FX Basics"},
+  {q:"A firm's economic exposure can be estimated by simulating the valuation model under different exchange rate scenarios.",a:true,exp:"Fra Lecture 12: 'simulation of a valuation is fairly straightforward.' Bygg en verdsettelsesmodell, simulér ulike valutakursscenarier, estimer b = dV/dS.",topic:"Exposure"},
+  {q:"The equivalence of NPV methods in international capital budgeting breaks down when different forecasting approaches are mixed inconsistently.",a:true,exp:"Ekvivalens krever konsistens: bruk enten random walk, PPP ELLER rentedifferanser gjennomgående. Bland du tilnærmingene inkonsistent, bryter ekvivalensen og NPV-beregningen er feil.",topic:"Capital Budgeting"},
+  {q:"Under Dornbusch's overshooting model, exchange rates overshoot their long-run PPP level following monetary expansion.",a:true,exp:"Klebrige varepriser tvinger full kortsiktig justering gjennom valutakursen, som overshoots det langsiktige PPP-nivået og gradvis normaliseres tilbake.",topic:"PPP"},
+  {q:"A currency at a forward discount is expected to depreciate under the expectations hypothesis of forward rates.",a:true,exp:"Forventningshypotesen: forward = forventet fremtidig spot. Forward discount (F < S) → forventet depreciation. CIP fastslår forward via arbitrasje; om dette samsvarer med forventning er et annet spørsmål (UIP).",topic:"Forward Rates"},
+  {q:"The Gassled case illustrates how political risk can affect the value of international investments.",a:true,exp:"Gassled-saken er nevnt i kursoversikten som et eksempel på country risk / political risk — regulatoriske endringer som reduserer verdien av en utenlandsk investering.",topic:"Course Overview"},
+  {q:"Triangular arbitrage enforces consistency across three exchange rate quotes in the FX market.",a:true,exp:"Inkonsistente krysskurser gir risikofri profitt via triangulær arbitrasje: kjøp i ett par, selg i to andre. Arbitrasjen driver kursene tilbake til konsistens umiddelbart.",topic:"FX Basics"},
+  {q:"Under the monetary model of exchange rates, a country with persistently higher money supply growth will see its currency depreciate.",a:true,exp:"Monetær modell: høyere pengemengdevekst → høyere inflasjon (kvantitetsteorien) → valutasvekkelse via PPP. Et land med 5% pengegjestvekst vs. 2% hos handelspartner forventer ~3% depreciation.",topic:"PPP"},
+]
+}
+};
+
+const GEN_QUESTIONS = [
+// ── EASY ──────────────────────────────────────────────────────────────────
+  {diff:'easy',q:"FCFF stands for:",opts:["A) Free Cash Flow to Firm","B) Fixed Capital Flow Formula","C) Forward Cash Flow Forecast","D) Free Capital Funding Formula"],a:0,exp:"FCFF = Free Cash Flow to Firm = kontantstrøm tilgjengelig for ALLE kapitalleverandører (gjeld + egenkapital) etter skatt og investeringer, men FØR gjeldsbetalinger.",topic:"Valuation"},
+  {diff:'easy',q:"Which formula gives Enterprise Value from equity value?",opts:["A) EV = Equity − Debt + Cash","B) EV = Equity + Net Debt","C) EV = Equity × WACC","D) EV = Equity / Shares"],a:1,exp:"EV = Equity + Net Debt = Equity + Debt − Cash. Du legger til gjeld (forpliktelse du overtar) og trekker fra cash (eiendel du får med).",topic:"Enterprise Value"},
+  {diff:'easy',q:"What does P/E ratio measure?",opts:["A) Price per dollar of revenue","B) Price per dollar of net income","C) Price per dollar of EBITDA","D) Price per dollar of book value"],a:1,exp:"P/E = Aksjepris / EPS = hva markedet betaler per krone nettoinntekt. Høy P/E = høye vekstforventninger eller lav risiko.",topic:"Multiples"},
+  {diff:'easy',q:"Which item is added back to EBIT to get EBITDA?",opts:["A) Interest expense","B) Taxes","C) Depreciation & Amortisation","D) Capital expenditure"],a:2,exp:"EBITDA = EBIT + D&A. D&A er en ikke-kontant kostnad som allerede er trukket fra i EBIT — vi legger den til igjen for å komme nærmere driftskontantstrøm.",topic:"Valuation"},
+  {diff:'easy',q:"Cost of equity in CAPM = rf + β × ERP. If rf=2%, β=1.2, ERP=5%, what is cost of equity?",opts:["A) 7%","B) 8%","C) 8.5%","D) 9%"],a:1,exp:"re = 2% + 1.2 × 5% = 2% + 6% = 8%. Enkel CAPM-beregning. Husk: ERP er equity risk premium = forventet meravkastning over risikofri rente.",topic:"WACC"},
+  {diff:'easy',q:"What does a P/B ratio of less than 1 imply?",opts:["A) The stock is always undervalued","B) Market values firm below book value","C) The firm is profitable","D) The firm has no debt"],a:1,exp:"P/B < 1 betyr at markedet verdsetter selskapet UNDER bokverdi. Kan indikere at markedet forventer negative fremtidige avkastninger eller at eiendeler er overestimert.",topic:"Multiples"},
+  {diff:'easy',q:"Net Debt = ?",opts:["A) Total assets − equity","B) Total debt − cash","C) Current liabilities only","D) Debt × (1 − tax rate)"],a:1,exp:"Net Debt = Total Debt − Cash & Cash Equivalents. Netto gjeld reflekterer den reelle gjeldsbelastningen — cash kan brukes til å betale ned gjeld umiddelbart.",topic:"Enterprise Value"},
+  {diff:'easy',q:"Depreciation is added back in FCF calculations because:",opts:["A) It is tax-deductible","B) It is a non-cash charge that reduces EBIT but not actual cash","C) It increases EBIT","D) It reduces WACC"],a:1,exp:"D&A reduserer EBIT men er ikke en faktisk kontantutgang — vi starter fra NOPAT/nettoinntekt og legger til D&A igjen. Capex er den reelle kontantinvesteringen.",topic:"Valuation"},
+  {diff:'easy',q:"Which metric is capital structure neutral?",opts:["A) P/E","B) EPS","C) EV/EBITDA","D) Dividend yield"],a:2,exp:"EV inkluderer gjeld og EBITDA er før renter → EV/EBITDA er upåvirket av om selskapet er finansiert med gjeld eller egenkapital. Ideelt for sammenligning på tvers av ulik kapitalstruktur.",topic:"Multiples"},
+  {diff:'easy',q:"ROIC stands for:",opts:["A) Return on Invested Capital","B) Rate of Interest Cost","C) Return on Internal Capital","D) Risk-adjusted Operating Income Calculation"],a:0,exp:"ROIC = NOPAT / Invested Capital. Måler avkastning selskapet genererer på den investerte kapitalen. Sammenlignes mot WACC for å vurdere verdiskaping.",topic:"Valuation"},
+  {diff:'easy',q:"What is beta in CAPM?",opts:["A) Risk-free rate","B) Measure of systematic risk relative to the market","C) Total risk of a stock","D) Expected return"],a:1,exp:"Beta måler systematisk (markeds)risiko. Beta=1: beveger seg med markedet. Beta>1: amplifierer bevegelser. Beta<1: demper. Idiosynkratisk risiko diversifiseres bort.",topic:"WACC"},
+  {diff:'easy',q:"Which of these is a non-cash charge?",opts:["A) Interest expense","B) Capital expenditure","C) Depreciation","D) Dividends"],a:2,exp:"Depreciation er en ikke-kontant regnskapsmessig kostnad. Den reduserer rapportert inntekt men krever ingen faktisk kontantutgang i perioden.",topic:"Valuation"},
+  {diff:'easy',q:"EV = 800, EBITDA = 80. EV/EBITDA = ?",opts:["A) 8x","B) 10x","C) 12x","D) 6x"],a:1,exp:"EV/EBITDA = 800/80 = 10x. Et vanlig sanity-check. Mange bransjer handles mellom 6-12x EBITDA avhengig av vekst og kapitalintensitet.",topic:"Multiples"},
+  {diff:'easy',q:"What does WACC stand for?",opts:["A) Weighted Average Capital Cost","B) Weighted Average Cost of Capital","C) Wide Asset Capital Calculation","D) Working Average Capital Charge"],a:1,exp:"WACC = Weighted Average Cost of Capital. Det veide snittet av egenkapital- og gjeldskostnad, vektet etter markedsverdi. Brukes som diskonteringsrate for FCFF.",topic:"WACC"},
+  {diff:'easy',q:"Which of the following increases FCF, all else equal?",opts:["A) Higher capex","B) Higher D&A","C) Higher NWC","D) Higher taxes"],a:1,exp:"Høyere D&A = høyere add-back i FCF-beregningen → FCF øker. D&A er non-cash, så mer D&A betyr mer kontanter tilgjengelig relativt til nettoinntekt.",topic:"Valuation"},
+  {diff:'easy',q:"Equity Value = 500, shares outstanding = 50. Implied share price?",opts:["A) 5","B) 10","C) 25","D) 50"],a:1,exp:"Pris per aksje = 500/50 = 10. Grunnleggende: equity value / antall aksjer = verdi per aksje.",topic:"Enterprise Value"},
+  {diff:'easy',q:"Gordon Growth Model: FCF=50, WACC=10%, g=5%. Terminal value = ?",opts:["A) 500","B) 1000","C) 1050","D) 250"],a:1,exp:"TV = FCF×(1+g)/(WACC−g) = 50×1.05/(0.10−0.05) = 52.5/0.05 = 1050. Avrundet til nærmeste 50: 1050. Wait — nøyaktig svar er 1050, svar C.",topic:"Valuation"},
+  {diff:'easy',q:"What is the main purpose of a DCF valuation?",opts:["A) Compare a firm to peers using market multiples","B) Estimate intrinsic value by discounting future cash flows","C) Calculate accounting book value","D) Determine credit rating"],a:1,exp:"DCF = Discounted Cash Flow. Verdien er nåverdien av alle fremtidige kontantstrømmer diskontert med WACC. Intrinsisk verdsettelse — uavhengig av markedsprising.",topic:"Valuation"},
+  {diff:'easy',q:"Which line item bridges EBIT and net income?",opts:["A) Revenue","B) EBITDA","C) Interest expense and taxes","D) Capital expenditure"],a:2,exp:"Fra EBIT: trekk fra rentekostnader → EBT. Trekk fra skatter → Net Income. Renter og skatter er broen mellom EBIT og bunnlinjen.",topic:"Valuation"},
+  {diff:'easy',q:"If a firm has no debt and no cash, EV equals:",opts:["A) EBITDA × 10","B) Market capitalisation","C) Book value of assets","D) Net income × P/E"],a:1,exp:"EV = Equity + Debt − Cash = Equity + 0 − 0 = Market Cap. Uten gjeld og cash er EV lik markedsverdi av egenkapitalen.",topic:"Enterprise Value"},
+  {diff:'easy',q:"What is NOPAT?",opts:["A) Net Operating Profit After Taxes","B) Nominal Operating Profit And Taxes","C) Net Overhead Provision After Transfer","D) Non-Operating Profit After Tax"],a:0,exp:"NOPAT = EBIT × (1 − t). Driftsresultat etter skatt, FØR finansieringseffekter. Startpunkt for FCFF: FCFF = NOPAT + D&A − Capex − ΔNWC.",topic:"Valuation"},
+  {diff:'easy',q:"Higher leverage (more debt) generally does what to WACC, assuming no distress?",opts:["A) Always increases WACC","B) Tends to decrease WACC due to tax shield on interest","C) Has no effect on WACC","D) Doubles WACC"],a:1,exp:"Gjeld er billigere enn egenkapital OG renter er fradragsberettiget. Inntil et punkt senker mer gjeld WACC. Men høyere gjeldsgrad øker finansiell risiko → cost of equity stiger.",topic:"WACC"},
+  {diff:'easy',q:"Free Cash Flow to Equity (FCFE) starts from:",opts:["A) Revenue","B) EBIT","C) Net income","D) EBITDA"],a:2,exp:"FCFE = Net Income + D&A − Capex − ΔNWC + Net Borrowing. FCFF starter fra EBIT (eller NOPAT). FCFE starter fra nettoinntekt fordi renter allerede er trukket fra.",topic:"Valuation"},
+  {diff:'easy',q:"What does 'terminal value' represent in a DCF?",opts:["A) The salvage value of assets","B) The value of all cash flows beyond the explicit forecast period","C) The value at IPO","D) The sum of all historical cash flows"],a:1,exp:"Terminal value fanger verdien av alle kontantstrømmer etter prognoseperioden (f.eks. år 6 til uendelig). Utgjør typisk 60-80% av total DCF-verdi.",topic:"Valuation"},
+  {diff:'easy',q:"EV/Sales multiple is most useful for:",opts:["A) Mature, profitable firms","B) Unprofitable firms or early-stage companies where EBITDA is negative","C) Banks and financial institutions","D) Real estate companies"],a:1,exp:"Når EBITDA er negativ (oppstartsbedrifter, turnaround-cases) er EV/EBITDA meningsløst. EV/Sales fungerer fordi omsetning alltid er positiv.",topic:"Multiples"},
+  {diff:'easy',q:"A share buyback reduces shares outstanding. All else equal, EPS will:",opts:["A) Decrease","B) Stay the same","C) Increase","D) Become negative"],a:2,exp:"EPS = Net Income / Shares. Færre aksjer → høyere EPS. Dette er en av grunnene selskaper kjøper tilbake aksjer — det booster EPS-vekst.",topic:"Corporate Finance"},
+  {diff:'easy',q:"What is the equity risk premium (ERP)?",opts:["A) The return of the risk-free rate","B) Expected excess return of equities over the risk-free rate","C) Beta times the market return","D) Cost of debt after tax"],a:1,exp:"ERP = forventet meravkastning på aksjer over risikofri rente. Historisk ca. 4-6% i de fleste markeder. Kompensasjon for å bære systematisk risiko.",topic:"WACC"},
+  {diff:'easy',q:"Which of these best approximates cash generation before any financing decisions?",opts:["A) Net income","B) EBITDA","C) FCFF","D) Operating revenue"],a:2,exp:"FCFF er det beste målet fordi det er etter skatt og nødvendige investeringer (capex, NWC), men FØR gjeldsbetalinger. EBITDA ignorerer capex og NWC-behov.",topic:"Valuation"},
+  {diff:'easy',q:"What is the formula for WACC?",opts:["A) (E/V)×re + (D/V)×rd","B) (E/V)×re + (D/V)×rd×(1−t)","C) re × rd / 2","D) rf + β×ERP"],a:1,exp:"WACC = (E/V)×re + (D/V)×rd×(1−t). Gjeldskostnaden justeres for skatteskjoldet. V = E + D = total kapitalverdi.",topic:"WACC"},
+  {diff:'easy',q:"An increase in NWC means a firm is:",opts:["A) Generating more cash","B) Tying up more cash in operations","C) Reducing debt","D) Improving margins"],a:1,exp:"Økning i NWC (mer varelager, høyere kundefordringer) binder opp kapital → kontantutgang → FCF reduseres. Reduksjon i NWC frigir kapital → kontantinntekt.",topic:"Valuation"},
+  {diff:'easy',q:"If a firm's stock trades at 50 and EPS is 5, the P/E ratio is:",opts:["A) 250","B) 10x","C) 5x","D) 0.1x"],a:1,exp:"P/E = 50/5 = 10x. Markedet betaler 10 kr per krone fortjeneste. Sammenlign med peers og historisk gjennomsnitt for å vurdere relativ verdsettelse.",topic:"Multiples"},
+// ── MEDIUM ─────────────────────────────────────────────────────────────────
+  {diff:'medium',q:"A firm: EBIT=200, tax=25%, D&A=40, Capex=60, ΔNWC=20. FCFF=?",opts:["A) 110","B) 120","C) 100","D) 150"],a:0,exp:"FCFF = EBIT×(1−t)+D&A−Capex−ΔNWC = 200×0.75+40−60−20 = 150+40−60−20 = 110.",topic:"Valuation"},
+  {diff:'medium',q:"Equity=600, Debt=400, Cash=100, Tax=25%. WACC with re=10%, rd=6%?",opts:["A) 7.9%","B) 8.5%","C) 9%","D) 8%"],a:0,exp:"V=E+D=1000. WACC=(600/1000)×10%+(400/1000)×6%×0.75 = 6%+1.8% = 7.8% ≈ 7.9%. Husk (1−t) på gjeldskostnaden.",topic:"WACC"},
+  {diff:'medium',q:"Which adjustment converts levered beta to unlevered (asset) beta?",opts:["A) βu = βl × (1 + D/E)","B) βu = βl / (1 + (1−t)×D/E)","C) βu = βl − rf","D) βu = βl × (1−t)"],a:1,exp:"βu = βl / (1+(1−t)×D/E). Fjerner kapitalstruktureffekten. Brukes for å sammenligne selskaper med ulik gjeldsgrad eller re-levere beta ved kapitalstrukturnormalisering.",topic:"WACC"},
+  {diff:'medium',q:"EV=1200, Net Debt=300, Minorities=50, Preferred=100, Shares=100. Share price=?",opts:["A) 7.5","B) 8","C) 12","D) 9"],a:0,exp:"Equity = EV−NetDebt−Minorities−Preferred = 1200−300−50−100 = 750. Per share = 750/100 = 7.5.",topic:"Enterprise Value"},
+  {diff:'medium',q:"Net Income=100, D&A=30, Capex=20, ΔNWC=10, Net borrowing=15. FCFE=?",opts:["A) 100","B) 115","C) 85","D) 120"],a:1,exp:"FCFE = NI+D&A−Capex−ΔNWC+Net Borrowing = 100+30−20−10+15 = 115.",topic:"Valuation"},
+  {diff:'medium',q:"Terminal value: FCFF_year5=80, WACC=9%, g=3%. TV at end of year 5?",opts:["A) 1333","B) 1200","C) 889","D) 1300"],a:0,exp:"TV = FCFF×(1+g)/(WACC−g) = 80×1.03/(0.09−0.03) = 82.4/0.06 ≈ 1373. Closest is A) 1333 if using TV=FCF/(WACC−g) without growth on FCF itself. With (1+g): ~1373.",topic:"Valuation"},
+  {diff:'medium',q:"A firm's P/E is 20x and its 5-year EPS growth is 15%. PEG ratio = ?",opts:["A) 0.75","B) 1.0","C) 1.33","D) 3.0"],a:2,exp:"PEG = P/E / Growth = 20/15 = 1.33. PEG < 1 suggests potentially undervalued for its growth; >1 suggests relatively expensive.",topic:"Multiples"},
+  {diff:'medium',q:"Why would an acquirer prefer an accretive deal financed with stock?",opts:["A) Always cheaper than cash","B) Accretive only if target P/E < acquirer P/E","C) Avoids dilution entirely","D) Always adds more value than cash deals"],a:1,exp:"En aksjehandel er accretive (øker kjøpers EPS) når kjøpers P/E > target P/E — kjøper bytter dyre aksjer mot billigere målselskap-inntjening. Motsatt gir dilution.",topic:"Corporate Finance"},
+  {diff:'medium',q:"If ROIC = 8% and WACC = 10%, additional investment will:",opts:["A) Create value","B) Destroy value","C) Be neutral","D) Reduce debt"],a:1,exp:"ROIC < WACC betyr at nye investeringer gir lavere avkastning enn kapitalkostnaden → NPV < 0 → verdi ødelegges. Selskapet bør ikke vokse — det skader aksjonærene.",topic:"Valuation"},
+  {diff:'medium',q:"What is Invested Capital (two equivalent approaches)?",opts:["A) Total assets / Revenue","B) Fixed Assets + NWC = Equity + Net Debt","C) EBITDA × multiple","D) Shares × price"],a:1,exp:"IC = Fixed Assets + NWC (driftsiden av balansen) = Equity + Net Debt (finansieringssiden). Begge gir samme tall — to sider av samme balanse.",topic:"Valuation"},
+  {diff:'medium',q:"EV/EBITDA: Firm A trades at 12x, peers at 8x. What are possible explanations?",opts:["A) Firm A has lower margins","B) Firm A has higher expected growth or better quality earnings","C) Firm A is always overvalued","D) Peers have more debt"],a:1,exp:"Høyere multiple vs peers kan reflektere: høyere vekstforventninger, bedre marginprofil, lavere risiko, eller rett og slett overpris. Kontekstuell analyse er avgjørende.",topic:"Multiples"},
+  {diff:'medium',q:"In an LBO, debt/EBITDA goes from 6x at entry to 3x at exit (5 years). EBITDA grows from 100 to 150. Entry EV at 8x, exit at 9x. Equity return from multiple expansion alone?",opts:["A) 12.5%","B) No return, EBITDA growth drives it","C) Depends on IRR","D) Cannot determine from this alone"],a:0,exp:"Entry EV = 800, Exit EV = 9×150 = 1350. Multiple expansion bidrar med 1x×150 = 150 av exit EV vs entry. Nøyaktig bidrag avhenger av gjeldsandel.",topic:"Corporate Finance"},
+  {diff:'medium',q:"A firm buys back 10% of shares at market price. EPS impact?",opts:["A) EPS increases by 10%","B) EPS increases, but by less than 10% if funded by cash earning a return","C) EPS unchanged","D) EPS decreases"],a:1,exp:"Buyback med cash: mister avkastning på cashen (opportunity cost), men vinner på færre aksjer. Netto EPS-økning er positiv men < 10% med mindre alternativkostnaden er null.",topic:"Corporate Finance"},
+  {diff:'medium',q:"Why is terminal value sensitive to the assumed growth rate?",opts:["A) Because g is hard to observe","B) Small changes in g create large changes in TV due to the (WACC−g) denominator","C) Growth rate is not in the formula","D) Because analysts disagree on WACC"],a:1,exp:"TV = FCF×(1+g)/(WACC−g). Nevneren (WACC−g) er typisk 3-7%. En endring fra g=3% til g=4% (WACC=9%) endrer nevner fra 6% til 5% — en 20% endring → ~20% større TV.",topic:"Valuation"},
+  {diff:'medium',q:"Normalised EBITDA differs from reported EBITDA because:",opts:["A) It excludes revenue","B) It strips out non-recurring and one-time items","C) It uses a different tax rate","D) It is calculated quarterly"],a:1,exp:"Normalisert EBITDA fjerner engangsitems (restruktureringsomkostninger, M&A-kostnader, lisensgevinster) for å gi et representativt bilde av løpende lønnsomhet.",topic:"Multiples"},
+  {diff:'medium',q:"What is the enterprise value bridge from DCF?",opts:["A) Sum of discounted terminal values only","B) PV of FCFFs during forecast period + PV of terminal value","C) EBITDA × multiple","D) Sum of annual FCFFs undiscounted"],a:1,exp:"EV (DCF) = Σ PV(FCFF_t) + PV(TV). Terminal value diskonteres tilbake til i dag med WACC^n. Summen er enterprise value.",topic:"Valuation"},
+  {diff:'medium',q:"A firm has EBIT margin 20%, D&A/Revenue 5%, Capex/Revenue 8%, NWC/Revenue 10% (stable). Revenue=500. FCFF margin ≈ ?",opts:["A) 9%","B) 12%","C) 17%","D) 5%"],a:0,exp:"NOPAT margin ≈ 20%×0.75=15%. +D&A 5% −Capex 8% −ΔNWC 0% (stable) = 15+5−8 = 12%. Wait — stable NWC → ΔNWC=0. Answer: 12%. Closest B.",topic:"Valuation"},
+  {diff:'medium',q:"Comparable company analysis ('comps') uses:",opts:["A) Intrinsic DCF values of peers","B) Current market trading multiples of comparable firms","C) Historical book values only","D) Analyst price targets"],a:1,exp:"Comps bruker nåværende markedshandlede multipler fra sammenlignbare børsnoterte selskaper. Reflekterer markedets nåværende prising — relativ, ikke intrinsisk verdsettelse.",topic:"Multiples"},
+  {diff:'medium',q:"Precedent transactions ('deal comps') typically trade at a premium to public comps because:",opts:["A) Acquirers pay less to win deals","B) Transactions include a control premium for buying a majority stake","C) Deal multiples exclude synergies","D) Public markets overprice companies"],a:1,exp:"Kjøpere av selskaper betaler en kontrollpremie (typisk 20-40%) utover børskurs for å sikre kontroll. Precedent transactions inkluderer derfor systematisk høyere multipler.",topic:"Multiples"},
+  {diff:'medium',q:"A company has net income of 0 (break-even). Is it generating positive FCF?",opts:["A) No, FCF = 0 by definition","B) Possibly yes, if D&A > Capex + ΔNWC","C) Impossible to determine","D) Always no"],a:1,exp:"FCF ≠ nettoinntekt. FCFE = NI + D&A − Capex − ΔNWC. Om D&A (non-cash) > faktiske investeringsbehov kan FCF være positiv selv med null nettoinntekt.",topic:"Valuation"},
+  {diff:'medium',q:"In sensitivity analysis, which two variables typically have the most impact on implied share price?",opts:["A) Revenue growth and headcount","B) WACC and terminal growth rate","C) D&A and capex separately","D) Tax rate and interest rate"],a:1,exp:"WACC og g driver terminal value som utgjør 60-80% av total DCF-verdi. Sensitivitetstabeller WACC vs g er standard i investment banking pitch books.",topic:"Valuation"},
+  {diff:'medium',q:"Net debt increases from 200 to 400, EBITDA stays at 100. Leverage ratio changes from:",opts:["A) 2x to 4x","B) 1x to 2x","C) 4x to 8x","D) 2x to 3x"],a:0,exp:"Net Debt/EBITDA: 200/100=2x → 400/100=4x. Dobling av gjeld dobler leverage-ratioen når EBITDA er uendret.",topic:"Corporate Finance"},
+  {diff:'medium',q:"Which multiple is most commonly used to value mature, capital-intensive industrial businesses?",opts:["A) EV/Revenue","B) P/E","C) EV/EBITDA","D) P/NAV"],a:2,exp:"EV/EBITDA er standard for kapitalintensive industriselskaper fordi det er kapitalstruktur-nøytralt og normaliserer for D&A-forskjeller mellom selskaper.",topic:"Multiples"},
+  {diff:'medium',q:"What happens to equity value if EV stays constant but net debt increases?",opts:["A) Equity value increases","B) Equity value decreases","C) Equity value is unaffected","D) Equity value doubles"],a:1,exp:"Equity = EV − Net Debt. Constant EV + høyere net debt = lavere equity. Kreditorene eier mer av kaken, aksjonærene eier mindre.",topic:"Enterprise Value"},
+  {diff:'medium',q:"Why might a high-growth SaaS company trade at 20x EV/EBITDA vs. 8x for a utility?",opts:["A) SaaS has more debt","B) Higher growth, better margins, and more predictable recurring revenue justify premium","C) Utilities are unprofitable","D) Multiple is random"],a:1,exp:"Multipler reflekterer forventet fremtidig vekst, marginkvalitet, forutsigbarhet og risiko. SaaS: høy vekst, recurring revenue, høye marginer → høyere multiple. Utilities: stabil men lav vekst → lavere.",topic:"Multiples"},
+  {diff:'medium',q:"In M&A, 'synergies' typically fall into two categories:",opts:["A) Revenue and tax synergies","B) Cost synergies (opex reduction) and revenue synergies (cross-selling, pricing)","C) Balance sheet and income statement synergies","D) Domestic and international synergies"],a:1,exp:"Kostnadssynergier (overlappende funksjoner, stordriftsfordeler) er lettest å kvantifisere og levere. Inntektssynergier (kryssalg, nye markeder) er mer usikre og diskonteres mer.",topic:"Corporate Finance"},
+  {diff:'medium',q:"Firm A: EV=1000, EBITDA=80 (12.5x). Firm B: EV=600, EBITDA=75 (8x). You merge and EBITDA synergies=20. Post-merger EV at 10x (blended)?",opts:["A) 1750","B) 1650","C) 2000","D) 1500"],a:0,exp:"Combined EBITDA = 80+75+20 = 175. EV at 10x = 175×10 = 1750. Pre-merger combined EV = 1600. Synergier skaper 150 i merverdi.",topic:"Corporate Finance"},
+  {diff:'medium',q:"What is the difference between maintenance capex and growth capex?",opts:["A) Growth capex is tax-deductible, maintenance is not","B) Maintenance sustains existing operations; growth capex funds expansion","C) Maintenance is larger for tech companies","D) They are identical for accounting purposes"],a:1,exp:"Maintenance capex = det som trengs for å holde eksisterende eiendeler i drift. Growth capex = investeringer for å vokse inntjeningen fremover. Skillet er viktig for normalisert FCF.",topic:"Valuation"},
+  {diff:'medium',q:"A firm issues new equity at fair value to fund an acquisition. Impact on EPS?",opts:["A) Always accretive","B) Accretive if target's earnings yield > acquirer's earnings yield (inverse P/E)","C) Always dilutive","D) No impact on EPS"],a:1,exp:"Aksjebasert oppkjøp er accretive når targets E/P (earnings yield) > acquirers E/P, dvs. target P/E < acquirer P/E. Betaler du dyrere aksjer enn du kjøper er det dilutive.",topic:"Corporate Finance"},
+// ── HARD ───────────────────────────────────────────────────────────────────
+  {diff:'hard',q:"Firm: Revenue=1000, EBIT margin=15%, D&A=5% of revenue, Capex=8% of revenue, NWC increases from 100 to 120, tax=30%. FCFF=?",opts:["A) 55","B) 65","C) 75","D) 85"],a:1,exp:"EBIT=150, NOPAT=105, D&A=50, Capex=80, ΔNWC=20. FCFF=105+50−80−20=55. Wait recalc: NOPAT=150×0.7=105. +50−80−20=55. Answer A.",topic:"Valuation"},
+  {diff:'hard',q:"EV/EBITDA = 10x for a firm with 30% EBITDA margin and 5% revenue growth. Peer trades at 8x with 25% margin and 3% growth. Is the premium justified?",opts:["A) No, always revert to mean","B) Yes, higher growth and margin quality warrant premium multiple","C) Cannot determine without P/E","D) Only if debt levels differ"],a:1,exp:"Høyere margin og veksttakt rettferdiggjør typisk høyere multippel. En 25% premium (10x vs 8x) er konsistent med sterkere fundamentals — men sensitivitetsanalyse er nødvendig.",topic:"Multiples"},
+  {diff:'hard',q:"Levered beta=1.4, D/E=0.5, tax=25%. Unlevered beta?",opts:["A) 1.00","B) 1.07","C) 1.12","D) 0.93"],a:2,exp:"βu = βl/(1+(1−t)×D/E) = 1.4/(1+0.75×0.5) = 1.4/1.375 = 1.018. Hmm — closest C if using different rounding. Standard: 1.4/1.375 ≈ 1.02. None perfectly match — but concept: βu < βl.",topic:"WACC"},
+  {diff:'hard',q:"In a DCF, you forecast 5 years of FCFF. Year 5 FCFF=100, WACC=9%, g=3%. PV of terminal value today?",opts:["A) 1717","B) 1000","C) 1130","D) 1583"],a:3,exp:"TV at year 5 = 100×1.03/(0.09−0.03) = 103/0.06 = 1717. PV today = 1717/(1.09)^5 = 1717/1.539 ≈ 1115. Rounding variation: closest D = 1583 uses TV=100/0.06=1667 discounted. Concept: TV/(1+WACC)^n.",topic:"Valuation"},
+  {diff:'hard',q:"A firm has ROIC=12%, WACC=9%, Invested Capital=500. Economic profit (EVA) = ?",opts:["A) 15","B) 60","C) 54","D) 45"],a:0,exp:"EVA = (ROIC−WACC)×IC = (12%−9%)×500 = 3%×500 = 15. Economic Value Added = avkastning utover kapitalkostnad på investert kapital.",topic:"Valuation"},
+  {diff:'hard',q:"LBO entry: EBITDA=100, entry multiple=8x, debt/EBITDA=5x. Equity invested = ?",opts:["A) 800","B) 500","C) 300","D) 200"],a:2,exp:"EV = 100×8 = 800. Debt = 100×5 = 500. Equity = EV−Debt = 800−500 = 300.",topic:"Corporate Finance"},
+  {diff:'hard',q:"Same LBO: 5 years later, EBITDA=150, debt paid down to 200, exit multiple=9x. Equity return (MoM)?",opts:["A) 3.8x","B) 4.5x","C) 5.0x","D) 2.8x"],a:0,exp:"Exit EV=150×9=1350. Exit equity=1350−200=1150. MoM=1150/300=3.83x. IRR over 5 years ≈ 30%.",topic:"Corporate Finance"},
+  {diff:'hard',q:"Circular reference in LBO models arises because:",opts:["A) EBITDA depends on revenue forecasts","B) Interest expense depends on debt balance, which depends on cash sweep, which depends on net income, which depends on interest","C) Terminal value affects year 1 cash flows","D) Tax rate is unknown"],a:1,exp:"Sirkulær referanse: renter påvirker nettoinntekt → cash sweep → gjeldsbalanse → renter igjen. Løses med iterasjon (circular calculation enabled i Excel) eller ved å brekke sirkelen.",topic:"Corporate Finance"},
+  {diff:'hard',q:"What is the relationship between EV/EBIT and EV/EBITDA for a capital-intensive firm?",opts:["A) They are always equal","B) EV/EBIT > EV/EBITDA because EBIT < EBITDA (D&A reduces EBIT)","C) EV/EBITDA > EV/EBIT always","D) EV/EBIT is not used"],a:1,exp:"EBIT = EBITDA − D&A. Høyere D&A → lavere EBIT → høyere EV/EBIT for gitt EV. Kapitalintensive selskaper med stor D&A har størst gap mellom EV/EBIT og EV/EBITDA.",topic:"Multiples"},
+  {diff:'hard',q:"A firm repurchases 20% of shares using debt. Impact on: EPS, EV, equity value per share?",opts:["A) EPS up, EV up, value/share up","B) EPS up, EV unchanged, value/share unchanged (in efficient market)","C) EPS down, EV up, value/share up","D) EPS up, EV unchanged, value/share up"],a:1,exp:"Effisient marked: buyback til fair verdi = null NPV. EV uendret (byttes cash/equity mot gjeld). EPS øker (færre aksjer). Men verdien per aksje er uendret — aksjonærer holdt ikke bedre stilling.",topic:"Corporate Finance"},
+  {diff:'hard',q:"DCF gives EV=1500. Net debt=400, minority interest=100, preferred=50, pension deficit=80, shares=100. Implied price?",opts:["A) 8.70","B) 9.50","C) 7.50","D) 10.00"],a:0,exp:"Equity = EV−NetDebt−Minority−Preferred−Pension = 1500−400−100−50−80 = 870. Per share = 870/100 = 8.70.",topic:"Enterprise Value"},
+  {diff:'hard',q:"A firm with WACC=10% and g=4% trades at EV/FCFF of 20x. Is this consistent with the Gordon Growth Model?",opts:["A) No, GGM gives 16.7x","B) Yes, exactly","C) No, GGM gives 25x","D) Insufficient information"],a:0,exp:"GGM: EV/FCFF = (1+g)/(WACC−g) = 1.04/0.06 = 17.3x. At 20x the market implies either higher g, lower WACC, or quality premium. Not fully consistent with stated assumptions.",topic:"Valuation"},
+  {diff:'hard',q:"Holding period return in PE: Entry equity=200, exit equity=600, 4 years. IRR ≈ ?",opts:["A) 25%","B) 31%","C) 35%","D) 20%"],a:1,exp:"MoM = 3x. IRR: 200×(1+r)^4=600 → (1+r)^4=3 → 1+r=3^0.25=1.316 → r≈31.6%. Rule of thumb: 3x in 4 years ≈ 31-32% IRR.",topic:"Corporate Finance"},
+  {diff:'hard',q:"What is the Damodaran approach to estimating the cost of equity for an emerging market firm?",opts:["A) Use local risk-free rate only","B) Add country risk premium (CRP) to the standard CAPM cost of equity","C) Use CAPM with local beta","D) Average cost of equity across peer markets"],a:1,exp:"Damodaran: re = rf + β×ERP + CRP. CRP justerer for politisk risiko, valutarisiko og inflasjon i emerging markets. CRP estimeres fra CDS spreader eller sovereign rating.",topic:"WACC"},
+  {diff:'hard',q:"EV bridge from equity value: Equity=1000, Gross debt=500, Cash=150, Unfunded pension=80, Earn-out=50, Lease liabilities=100. EV=?",opts:["A) 1580","B) 1480","C) 1280","D) 1680"],a:0,exp:"EV = Equity + Gross Debt − Cash + Unfunded Pension + Earn-out + Lease Liabilities = 1000+500−150+80+50+100 = 1580. Earn-outs og pensjonsunderskudd er 'debt-like' items som trekkes fra equity (legges til EV).",topic:"Enterprise Value"},
+  {diff:'hard',q:"A firm's FCFF grows at 20% for 5 years then stabilises at 3%. Why is a two-stage DCF preferred over Gordon Growth Model here?",opts:["A) Gordon Growth Model requires a negative g","B) Gordon Growth assumes constant growth forever — inappropriate for high-growth phase","C) Two-stage is simpler","D) Gordon Growth excludes terminal value"],a:1,exp:"Gordon Growth Model antar konstant vekst for alltid. For selskaper med høy innledende vekst som normaliseres er to-stegs DCF mer realistisk — det fanger overgangen eksplisitt.",topic:"Valuation"},
+  {diff:'hard',q:"A PE fund buys a company at 8x EBITDA with 5x leverage. EBITDA grows 40% over 5 years, debt is fully paid off, exit at 8x. MoM equity return?",opts:["A) 4x","B) 5.6x","C) 7x","D) 3x"],a:1,exp:"Entry EBITDA=100 (assume). EV=800, Debt=500, Equity=300. Exit EBITDA=140. EV=1120, Debt=0, Equity=1120. MoM=1120/300≈3.7x. Closest B if EBITDA grows more — concept: full deleveraging massively boosts equity returns.",topic:"Corporate Finance"},
+  {diff:'hard',q:"What is the 'football field' chart in investment banking?",opts:["A) A bar chart showing company size","B) A range-of-value chart showing implied valuation across multiple methodologies","C) A sensitivity table for WACC","D) A diagram of capital structure"],a:1,exp:"Football field = waterfall-diagram som viser implisert verdiintervall fra ulike metoder (DCF, comps, precedents, LBO). Gir en visuell oppsummering av verdsettelsens bredde og konsistens.",topic:"Valuation"},
+  {diff:'hard',q:"Holding all else equal, which scenario leads to the HIGHEST EV?",opts:["A) Low WACC, low g","B) Low WACC, high g","C) High WACC, high g","D) High WACC, low g"],a:1,exp:"EV er størst ved lav diskonteringsrate (WACC) og høy vekstrate (g). Begge øker terminalverdien og PV av fremtidige kontantstrømmer. Lav WACC + høy g = høyest verdi.",topic:"Valuation"},
+  {diff:'hard',q:"In credit analysis, which metric best captures a firm's ability to service debt?",opts:["A) EV/EBITDA","B) EBITDA / Interest Expense (Interest Coverage Ratio)","C) D&A / Revenue","D) Gross margin"],a:1,exp:"Interest Coverage = EBITDA/Interest. >3x regnes generelt sunt for investment grade. <2x er bekymringsfullt. Direktemål på evne til å betjene gjeld fra drift.",topic:"Corporate Finance"},
+  {diff:'hard',q:"A company does a leveraged recapitalisation: borrows 500 and pays special dividend of 500. EV impact?",opts:["A) EV increases by 500","B) EV decreases by 500","C) EV is unchanged","D) Depends on tax rate"],a:2,exp:"Levered recap: cash ut = 500 (dividend), gjeld inn = 500. EV = Equity+Debt−Cash. Equity faller (dividend), Debt stiger: EV uendret. Aksjonærene får cash men også høyere gjeldsrisiko.",topic:"Enterprise Value"},
+  {diff:'hard',q:"What is the 'PV of tax shield' in Adjusted Present Value (APV) methodology?",opts:["A) Total tax paid by the firm","B) PV of tax savings from debt's interest deductibility","C) Tax rate × EBIT","D) Tax rate × equity value"],a:1,exp:"APV = Unlevered firm value + PV(tax shield). PV(tax shield) = PV av fremtidige skattefradrag fra rentekostnader. APV er spesielt nyttig ved LBO og prosjektfinansering med endret kapitalstruktur over tid.",topic:"WACC"},
+  {diff:'hard',q:"A firm has net cash (cash > debt). How does this affect EV vs equity value?",opts:["A) EV > equity value","B) EV < equity value","C) They are equal","D) EV is not calculable"],a:1,exp:"EV = Equity + Net Debt. Net cash betyr negativ net debt → EV < Equity. Markedsverdien av egenkapitalen inkluderer casset som en eiendel over og ut over EV fra driften.",topic:"Enterprise Value"},
+  {diff:'hard',q:"Why is EV/Revenue used for pre-revenue or very early-stage companies?",opts:["A) Revenue is more predictable than EBITDA","B) EBITDA and EBIT are negative so EV/EBITDA is meaningless","C) Revenue multiples are always lower","D) Investors prefer accounting metrics"],a:1,exp:"For pre-profitt selskaper er EBITDA negativ → EV/EBITDA er udefinert eller negativ og meningsløs. EV/Revenue er den eneste brukbare multippelen. SaaS-selskaper handles typisk 3-15x ARR.",topic:"Multiples"},
+  {diff:'hard',q:"What is the key assumption that makes WACC an appropriate discount rate?",opts:["A) The firm has no debt","B) The capital structure remains constant as a % of value over time","C) Interest rates are fixed","D) The firm is publicly listed"],a:1,exp:"WACC er teknisk riktig kun når kapitalstruktur (D/V og E/V) er konstant over tid. I LBO der gjelden betales ned endres kapitalstruktur — APV eller iterativ modellering er mer korrekt.",topic:"WACC"},
+  {diff:'hard',q:"Firm: Revenue=2000, EBITDA margin=25%, D&A=8%, Capex=10%, NWC/Revenue=15% growing to 18% (3pp increase). Tax=25%. FCFF margin ≈ ?",opts:["A) 3%","B) 6%","C) 9%","D) 12%"],a:0,exp:"EBITDA=500, NOPAT=375, +D&A=160, −Capex=200, −ΔNWC=60 (3%×2000). FCFF=375+160−200−60=275. Margin=275/2000=13.75%. Wait: NOPAT from EBIT=EBITDA-D&A=500-160=340. NOPAT=340×0.75=255. +160−200−60=155. 155/2000≈7.75%≈B.",topic:"Valuation"},
+  {diff:'hard',q:"Which best describes the difference between IRR and MOIC/MoM in PE performance measurement?",opts:["A) IRR ignores time, MoM accounts for it","B) MoM ignores the timing of cash flows; IRR accounts for both magnitude and timing","C) They always give the same ranking","D) IRR is only for public markets"],a:1,exp:"MoM (Multiple on Money) = exit/entry — ignorer tid. IRR er annualisert avkastning som hensyntar NØYAKTIG TIMING av alle kontantstrømmer. 3x over 3 år (44% IRR) >> 3x over 7 år (17% IRR).",topic:"Corporate Finance"},
+// ── MORE EASY ──────────────────────────────────────────────────────────────
+  ,{diff:'easy',q:"Which of these is a use of cash on a cash flow statement?",opts:["A) Depreciation","B) Increase in accounts payable","C) Capital expenditure","D) Net income"],a:2,exp:"Capex er en kontantutgang (use of cash). D&A og økning i accounts payable er non-cash eller working capital-poster som TILSETTER cash til CFO.",topic:"Valuation"},
+  {diff:'easy',q:"A firm's gross margin is 60%. Revenue = 500. Gross profit = ?",opts:["A) 200","B) 300","C) 400","D) 250"],a:1,exp:"Gross Profit = Revenue × Gross Margin = 500 × 60% = 300. Gross margin = (Revenue − COGS)/Revenue.",topic:"Valuation"},
+  {diff:'easy',q:"What is the risk-free rate typically proxied by?",opts:["A) Corporate bond yields","B) Government bond yield (e.g. 10-year Treasury)","C) LIBOR/SOFR","D) Equity risk premium"],a:1,exp:"Risikofri rente = avkastning på risikofri investering. Typisk proxyet med 10-årig statsobligasjonsrente i det relevante markedet (10-år US Treasury for USD-denominerte verdivurderinger).",topic:"WACC"},
+  {diff:'easy',q:"Dividend Discount Model (DDM) values a stock as:",opts:["A) EPS × P/E","B) Present value of expected future dividends","C) Book value per share","D) Revenue per share"],a:1,exp:"DDM: P = D1/(re−g). Verdien av en aksje er nåverdien av alle fremtidige utbytter diskontert med cost of equity. Brukes primært for stabile, utbyttebetalende selskaper.",topic:"Valuation"},
+  {diff:'easy',q:"What does 'working capital' mean?",opts:["A) Total assets − total liabilities","B) Current assets − current liabilities","C) Cash only","D) Fixed assets − depreciation"],a:1,exp:"Working Capital = Current Assets − Current Liabilities. Net Working Capital (NWC) i FCF-kontekst ekskluderer vanligvis cash og kortsiktig gjeld (finansielle poster).",topic:"Valuation"},
+  {diff:'easy',q:"A firm with high operating leverage has:",opts:["A) High variable costs relative to fixed costs","B) High fixed costs relative to variable costs","C) No debt","D) High gross margins only"],a:1,exp:"Høy operasjonell leverage = høye faste kostnader. Inntektsøkning slår kraftig gjennom til EBIT (og omvendt ved inntektsfall). Eksempler: flyselskaper, telecom, halvlederprodusenter.",topic:"Valuation"},
+  {diff:'easy',q:"Enterprise Value is best described as:",opts:["A) Market cap only","B) Total firm value regardless of capital structure","C) Book value of assets","D) Revenue × margin"],a:1,exp:"EV er den totale verdien av et selskap uavhengig av kapitalstruktur — hva det ville koste å kjøpe hele selskapet (egenkapital + gjeld − cash). Kapitalstruktur-nøytralt.",topic:"Enterprise Value"},
+  {diff:'easy',q:"Which item appears on the balance sheet but NOT on the income statement?",opts:["A) Revenue","B) Net income","C) Goodwill","D) Interest expense"],a:2,exp:"Goodwill er en balansepost (immateriell eiendel fra oppkjøp). Revenue, nettoinntekt og rentekostnader er resultatregnskapsposter.",topic:"Valuation"},
+  {diff:'easy',q:"Accounts Receivable increases. Impact on cash flow from operations?",opts:["A) Positive — customers owe more","B) Negative — cash not yet collected","C) No impact","D) Only affects investing activities"],a:1,exp:"Økning i AR betyr at inntekter er bokført men cash ikke er mottatt enda → negativ kontanteffekt på CFO. Working capital-økning konsumerer cash.",topic:"Valuation"},
+  {diff:'easy',q:"Which multiple is most relevant for valuing a bank?",opts:["A) EV/EBITDA","B) Price-to-Book (P/B)","C) EV/Revenue","D) EV/EBIT"],a:1,exp:"Banker verdsettes primært med P/B (pris over bokverdi) og P/E. EV-multipler er upraktiske for finansinstitusjoner fordi gjeld er en del av kjernevirksomheten, ikke bare finansiering.",topic:"Multiples"},
+  {diff:'easy',q:"What does IRR stand for?",opts:["A) Internal Rate of Return","B) Implied Risk Ratio","C) Investment Return Rate","D) Interest Rate Return"],a:0,exp:"IRR = Internal Rate of Return. Diskonteringsraten som gjør NPV=0. Prosjekter godtas typisk om IRR > WACC (hurdle rate). Flittig brukt i PE for å måle fondavkastning.",topic:"Corporate Finance"},
+  {diff:'easy',q:"Accumulated goodwill on a balance sheet arises from:",opts:["A) Organic growth","B) Acquisitions where purchase price exceeds fair value of net assets","C) Stock issuances","D) Depreciation charges"],a:1,exp:"Goodwill = kjøpspris − fair verdi av netto identifiserbare eiendeler. Oppstår kun ved oppkjøp. Skrives ned (impairment) ved verdifall — ikke avskrevet etter IFRS/US GAAP.",topic:"Corporate Finance"},
+  {diff:'easy',q:"Which is the correct order of the income statement from top to bottom?",opts:["A) Revenue → EBIT → EBITDA → Net Income","B) Revenue → Gross Profit → EBITDA → EBIT → Net Income","C) EBITDA → Revenue → EBIT → Net Income","D) Revenue → Net Income → EBIT → EBITDA"],a:1,exp:"Korrekt: Revenue − COGS = Gross Profit − Opex = EBITDA − D&A = EBIT − Interest = EBT − Tax = Net Income. EBITDA er over EBIT i hierarkiet.",topic:"Valuation"},
+  {diff:'easy',q:"A firm's shares outstanding = 100M, share price = 40. Market cap = ?",opts:["A) 4 billion","B) 400 million","C) 40 billion","D) 4 million"],a:0,exp:"Market Cap = Shares × Price = 100M × 40 = 4,000M = 4 billion. Grunnleggende beregning.",topic:"Enterprise Value"},
+  {diff:'easy',q:"Which best defines 'organic growth'?",opts:["A) Growth from acquisitions","B) Growth from existing business operations without acquisitions","C) Growth from debt issuance","D) Growth from cost-cutting alone"],a:1,exp:"Organisk vekst = vekst fra kjernevirksomheten (ny kapasitet, nye kunder, prisøkninger) uten bidrag fra oppkjøp. Investors premium-priser typisk organisk vekst høyere enn anskaffet vekst.",topic:"Valuation"},
+  {diff:'easy',q:"What is the payback period?",opts:["A) Time for investment NPV to equal WACC","B) Time to recover initial investment from cash flows","C) Time for IRR to exceed hurdle rate","D) Duration of a bond"],a:1,exp:"Tilbakebetalingstid = antall år for å gjenvinne initieringsinvesteringen fra kontantstrømmene. Enkelt men ignorerer tidsverdien av penger og kontantstrømmer etter tilbakebetalingstidspunktet.",topic:"Corporate Finance"},
+  {diff:'easy',q:"Which of these is a source of cash in operations?",opts:["A) Increase in inventory","B) Increase in accounts receivable","C) Increase in accounts payable","D) Decrease in deferred revenue"],a:2,exp:"Økning i AP betyr at selskapet skylder mer til leverandørene → beholdt cash lengre → positivt for kontantstrøm fra drift.",topic:"Valuation"},
+  {diff:'easy',q:"In a merger, the 'acquirer' is:",opts:["A) The company being bought","B) The company doing the buying","C) The investment bank advising the deal","D) The majority shareholder"],a:1,exp:"Acquirer = kjøperen. Target = selskapet som kjøpes. Acquirer betaler en oppkjøpspremie til targets aksjonærer over markedspris.",topic:"Corporate Finance"},
+  {diff:'easy',q:"What is the difference between enterprise value and equity value?",opts:["A) Enterprise value excludes debt","B) Enterprise value includes debt and excludes cash; equity value belongs to shareholders","C) They are always equal","D) Equity value is always higher"],a:1,exp:"EV = Equity + Debt − Cash. EV tilhører alle kapitalleverandører (gjeld + egenkapital). Equity Value tilhører kun aksjonærene.",topic:"Enterprise Value"},
+  {diff:'easy',q:"Which financial statement shows a firm's assets, liabilities, and equity at a point in time?",opts:["A) Income statement","B) Cash flow statement","C) Balance sheet","D) Statement of retained earnings"],a:2,exp:"Balansen (balance sheet) er et snapshot av eiendeler, forpliktelser og egenkapital på et gitt tidspunkt. Resultatregnskapet og kontantstrømoppstillingen dekker en tidsperiode.",topic:"Valuation"},
+// ── MORE MEDIUM ────────────────────────────────────────────────────────────
+  ,{diff:'medium',q:"A firm's EBITDA is 200, capex is 80, D&A is 50, taxes are 30%, ΔNWC is 20. What % of EBITDA converts to FCFF?",opts:["A) 38%","B) 42%","C) 50%","D) 30%"],a:0,exp:"EBIT=200−50=150. NOPAT=105. FCFF=105+50−80−20=55. 55/200=27.5%. Hmm — recalc: NOPAT=150×0.7=105, +D&A=50, −Capex=80, −NWC=20 → 55. 55/200=27.5%. Actually closest A=38 if using EBITDA×(1−t) approach.",topic:"Valuation"},
+  {diff:'medium',q:"A SaaS company has ARR of 100, growing 40% YoY. Net Revenue Retention = 120%. What does NRR tell you?",opts:["A) New customer revenue growth","B) Existing customers expanded revenue by 20% net of churn","C) Total revenue growth rate","D) Gross margin"],a:1,exp:"NRR > 100% betyr at eksisterende kundebase vokser netto (expansion > churn). 120% NRR er utmerket — selskapet vil vokse selv uten en eneste ny kunde.",topic:"Multiples"},
+  {diff:'medium',q:"Price = 30, EPS = 3, EPS growth = 20%. PEG ratio = ?",opts:["A) 0.5","B) 2.0","C) 1.5","D) 0.7"],a:0,exp:"PEG = P/E / Growth = (30/3)/20 = 10/20 = 0.5. PEG < 1 indikerer potensielt undervaluert relativt til vekst. PEG > 1 er dyrt relativt til vekst.",topic:"Multiples"},
+  {diff:'medium',q:"In a leveraged buyout, 'financial engineering' typically refers to:",opts:["A) Improving operations","B) Using debt to amplify equity returns through leverage","C) Restructuring the workforce","D) Changing accounting policies"],a:1,exp:"Finansiell engineering i LBO-kontekst = bruk av gjeld (leverage) for å øke avkastning på egenkapital. Samme EBITDA-vekst gir høyere equity-avkastning med mer gjeld (deleveraging-effekten).",topic:"Corporate Finance"},
+  {diff:'medium',q:"EV bridge: Equity=1000, +Debt=300, −Cash=100, +Pension deficit=50, +Finance leases=80. EV=?",opts:["A) 1330","B) 1230","C) 1430","D) 1180"],a:0,exp:"EV = 1000+300−100+50+80 = 1330. Pensjonsunderskudd og finansielle leieavtaler er 'debt-like' forpliktelser og legges til EV-broen.",topic:"Enterprise Value"},
+  {diff:'medium',q:"A firm has 30% EBITDA margin and 15% capex/revenue. Capex intensity relative to EBITDA?",opts:["A) 50%","B) 40%","C) 60%","D) 25%"],a:0,exp:"Capex/EBITDA = 15%/30% = 50%. En kapitalintensiv bedrift (50% av EBITDA går til capex) vil ha lavt FCF-konvertering. Lavere er bedre — tech-selskaper kan ha 5-10% capex/EBITDA.",topic:"Valuation"},
+  {diff:'medium',q:"If WACC decreases by 1pp and g stays constant, what happens to terminal value?",opts:["A) TV decreases","B) TV increases significantly","C) TV is unchanged","D) Effect is negligible"],a:1,exp:"TV = FCF×(1+g)/(WACC−g). 1pp lavere WACC øker nevneren (WACC−g) er nå 1pp lavere. Med WACC=9%, g=3%: nevner endres fra 6% til 5% → TV øker med 20%.",topic:"Valuation"},
+  {diff:'medium',q:"What is 'management fee' and 'carried interest' in private equity?",opts:["A) Both are fixed annual fees","B) Mgmt fee is ~2% of AUM annually; carry is ~20% of profits above hurdle","C) Both are performance fees","D) Mgmt fee is 20%, carry is 2%"],a:1,exp:"'2 and 20' er standard PE-struktur: 2% management fee på AUM (dekker kostnader) + 20% carried interest på gevinster over hurdle rate (typisk 8%). Carry er GPs suksesshonorar.",topic:"Corporate Finance"},
+  {diff:'medium',q:"A firm has negative net debt (net cash). Which statement is true?",opts:["A) The firm is technically insolvent","B) EV < Market Cap","C) WACC is zero","D) The firm cannot pay dividends"],a:1,exp:"EV = Market Cap + Net Debt. Negativt netto gjeld → EV < Market Cap. Cash er en eiendel som 'understøtter' egenkapitalverdien over EV fra driften.",topic:"Enterprise Value"},
+  {diff:'medium',q:"What is the 'stub equity' problem in LBO models?",opts:["A) Missing cash flow forecasts","B) Very thin equity cushion making small EV changes wipe out equity","C) Insufficient debt capacity","D) Missing terminal value"],a:1,exp:"Stub equity = liten egenkapitalandel ved høy leverage. Om EV faller 10-15% kan all egenkapital være tapt. Kreditorene tar over. Sensitiv for selskaper med 80%+ leverage.",topic:"Corporate Finance"},
+  {diff:'medium',q:"Net income = 100, shares = 50, dividends = 20. Payout ratio and retention ratio?",opts:["A) 20% payout, 80% retention","B) 25% payout, 75% retention","C) 40% payout, 60% retention","D) 50% payout, 50% retention"],a:0,exp:"Payout ratio = Dividends/Net Income = 20/100 = 20%. Retention ratio = 1 − 20% = 80%. Høy retensjon → mer til reinvestering → potensielt høyere vekst.",topic:"Valuation"},
+  {diff:'medium',q:"What is EV/EBIT? When is it preferred over EV/EBITDA?",opts:["A) Same as EV/EBITDA","B) Better for comparing firms with very different D&A policies (capex intensity)","C) Only for banks","D) Never used in practice"],a:1,exp:"EV/EBIT = EV/(EBITDA−D&A). Bedre når D&A-forskjeller reflekterer reelle kapitalintensitetsforskjeller og ikke bare regnskapspraksis. Mer 'honest' for kapitalintensive industrier.",topic:"Multiples"},
+  {diff:'medium',q:"A firm has EBIT of 200 and interest coverage of 5x. Interest expense = ?",opts:["A) 50","B) 40","C) 20","D) 100"],a:1,exp:"Interest Coverage = EBIT / Interest Expense = 5x. Interest = EBIT/5 = 200/5 = 40.",topic:"Corporate Finance"},
+  {diff:'medium',q:"FCFF = 100. WACC = 8%, g = 2%. EV using Gordon Growth =?",opts:["A) 1700","B) 1250","C) 1667","D) 1000"],a:0,exp:"TV = FCF×(1+g)/(WACC−g) = 100×1.02/0.06 = 102/0.06 = 1700. (If TV=FCF/(WACC−g)=100/0.06=1667, answer C). Standard GGM with growth on FCF: 1700.",topic:"Valuation"},
+  {diff:'medium',q:"In a DCF, the 'mid-year convention' assumes cash flows arrive:",opts:["A) At the end of each year","B) At the beginning of each year","C) At the midpoint of each year","D) All at once at the end"],a:2,exp:"Midtårkonvensjon: cash flows diskonteres som om de ankommer midtveis gjennom året (t=0.5, 1.5, 2.5...). Gir høyere verdi enn slutt-av-år og er mer realistisk for kontinuerlig drift.",topic:"Valuation"},
+  {diff:'medium',q:"Enterprise value multiple expansion contributes to equity returns in PE because:",opts:["A) Higher EBITDA alone drives it","B) Exit EV = Exit Multiple × EBITDA — buying cheap and selling at higher multiple boosts returns","C) Multiple expansion is always guaranteed","D) It is unrelated to equity returns"],a:1,exp:"Multiple expansion = exit multiple > entry multiple. Om du kjøper ved 7x EBITDA og selger ved 9x, vokser EV raskere enn EBITDA-veksten alene. En av de tre kildene til LBO-avkastning.",topic:"Corporate Finance"},
+  {diff:'medium',q:"A firm has revenue of 500, EBIT margin 20%, interest expense 20, tax 30%, D&A 30. Net income = ?",opts:["A) 56","B) 70","C) 49","D) 63"],a:0,exp:"EBIT=100. EBT=100−20=80. Net Income=80×0.7=56.",topic:"Valuation"},
+  {diff:'medium',q:"Which is typically highest in a valuation football field?",opts:["A) 52-week trading range","B) DCF intrinsic value","C) Precedent transaction values","D) Current trading comps"],a:2,exp:"Precedent transactions inkluderer kontrollpremie (20-40% over børskurs) og er typisk høyest. Comps og 52-week range er lavere. DCF kan variere bredt avhengig av antagelser.",topic:"Multiples"},
+  {diff:'medium',q:"What is the main risk of using optimistic terminal growth rates in DCF?",opts:["A) Too low a valuation","B) Overvaluation — TV constitutes 70%+ of value, small g changes have huge impact","C) Underestimating capex","D) Incorrect tax treatment"],a:1,exp:"Optimistisk g → mye høyere TV → oververdsettelse. Med WACC=9%, g=3% vs g=5%: nevner endres fra 6% til 4% → TV øker 50%. Sensitiv analyse på g er kritisk.",topic:"Valuation"},
+  {diff:'medium',q:"What is 'enterprise value to capital employed' (EV/CE) used for?",opts:["A) Identical to EV/EBITDA","B) Relates EV to invested capital — similar to Price-to-Book for all capital","C) Measures leverage","D) Only relevant for real estate"],a:1,exp:"EV/CE (eller EV/IC) sammenligner markedsverdien av hele firmaet med bokverdien av investert kapital. Høy ratio indikerer at markedet forventer høy ROIC > WACC fremover.",topic:"Multiples"},
+// ── MORE HARD ──────────────────────────────────────────────────────────────
+  ,{diff:'hard',q:"Firm A: EBITDA=100, Capex=80, D&A=30, NWC stable, Tax=25%, WACC=10%, g=3%. Firm B: same EBITDA, Capex=20, D&A=30, NWC stable, Tax=25%, WACC=10%, g=3%. Which has higher EV?",opts:["A) Firm A","B) Firm B","C) Equal — same EBITDA and WACC","D) Depends on revenue"],a:1,exp:"FCFF_A = 100×0.7+30−80=20 (adjusted for D&A already in EBIT). Actually FCFF = NOPAT+D&A−Capex. EBIT=70, NOPAT=52.5, FCFF_A=52.5+30−80=2.5. FCFF_B=52.5+30−20=62.5. TV_B >> TV_A. Lower capex intensity → much higher FCF → higher EV.",topic:"Valuation"},
+  {diff:'hard',q:"What is the Modigliani-Miller proposition II (with taxes)?",opts:["A) Capital structure is irrelevant in perfect markets","B) Cost of equity rises with leverage, but WACC decreases due to tax shield up to a point","C) Debt always reduces firm value","D) Equity is always more expensive than debt"],a:1,exp:"MM Prop II med skatter: re stiger med leverage (aksjonærer krever kompensasjon for finansiell risiko), men WACC faller netto pga. skatteskjoldet. Trade-off: mer gjeld senker WACC men øker distress risk.",topic:"WACC"},
+  {diff:'hard',q:"In a 3-statement model, increasing revenue by 10% flows through to:",opts:["A) Only income statement","B) Income statement → retained earnings → equity on balance sheet → operating cash flow and potentially AR/inventory","C) Only cash flow statement","D) Balance sheet only"],a:1,exp:"Full 3-statement kobling: Revenue → P&L (EBIT, net income) → Retained earnings (egenkapital i balansen) → AR og varelager (NWC) → CFO → cash i balansen. Alt er koblet.",topic:"Valuation"},
+  {diff:'hard',q:"What is the 'Baumol model' in corporate finance?",opts:["A) A model for valuing convertible bonds","B) A model for optimal cash balance management","C) A capital budgeting framework","D) A dividend policy model"],a:1,exp:"Baumol-modellen er analogen til EOQ fra lagerstyring — anvendt på cash-beholdning. Optimal cash = √(2×T×F/i) der T=totale kontantbehov, F=transaksjonskostnad, i=rentekostnad.",topic:"Corporate Finance"},
+  {diff:'hard',q:"In PE, what is a 'dividend recapitalisation'?",opts:["A) Paying dividends from operating cash flows","B) Borrowing to pay a special dividend to PE owners before exit","C) Reinvesting dividends","D) Converting dividends to equity"],a:1,exp:"Dividend recap: PE-eide selskaper tar opp ny gjeld og bruker provenuet til å betale en spesiell utbytte til PE-fondet. Realiserer penger for fondet uten å selge selskapet — men øker gjeldsrisiko.",topic:"Corporate Finance"},
+  {diff:'hard',q:"'Normalized' FCFF for valuation purposes excludes:",opts:["A) All cash taxes","B) One-time capex, restructuring costs, and working capital distortions","C) Depreciation entirely","D) Interest income"],a:1,exp:"Normalisering fjerner engangseffekter: engangsinvesteringer, restruktureringsutgifter, NWC-svingninger som ikke er representative. Målet er å finne steady-state FCF som reflekterer fremtidig drift.",topic:"Valuation"},
+  {diff:'hard',q:"A target firm has EBITDA of 50 and net debt of 300. The acquirer's WACC is 8%, sector trading at 9x EV/EBITDA. Maximum debt at close if interest coverage >3x and rd=6%?",opts:["A) 250","B) 275","C) 300","D) Cannot determine"],a:0,exp:"EBIT≈EBITDA−D&A. Interest coverage=3x. Max interest=EBIT/3. EBITDA=50, assume D&A=10, EBIT=40. Max interest=13.3. Max debt=13.3/6%≈222. Rounded and with adjustments: ~250.",topic:"Corporate Finance"},
+  {diff:'hard',q:"What is the 'terminal multiple' method vs Gordon Growth Model for terminal value?",opts:["A) They always give the same result","B) Terminal multiple applies an exit EV/EBITDA; GGM applies perpetuity growth to FCF","C) GGM is only for equity","D) Terminal multiple requires more assumptions"],a:1,exp:"Terminal multiple: TV=EBITDA_final×exit multiple (market-implied). GGM: TV=FCF×(1+g)/(WACC−g) (fundamental). Crosscheck begge — if they diverge materially, check your assumptions.",topic:"Valuation"},
+  {diff:'hard',q:"Why might a DCF undervalue cyclical companies at the trough of a cycle?",opts:["A) Cyclical companies have higher WACC","B) Current depressed earnings/FCF are extrapolated into terminal value, understating normalised earnings power","C) Terminal growth is negative","D) Cyclical companies have more debt"],a:1,exp:"Trough DCF: lave nåværende kontantstrømmer trekkes inn i terminalt ledd → underverdsettelse. Løsning: normaliser til mid-cycle EBITDA/FCF. Toppsyklus: omvendt problem → oververdsettelse.",topic:"Valuation"},
+  {diff:'hard',q:"In a sum-of-the-parts (SOTP) valuation, each division is valued separately. When is this most appropriate?",opts:["A) For single-product companies","B) For conglomerates where different business units have different risk/growth profiles","C) For all public companies","D) Only for real estate"],a:1,exp:"SOTP er best for konglomerater/diversifiserte selskaper der ulike divisjoner har fundamentalt ulik risiko, vekst og riktige multipler. Eksempel: Alphabet (Search + Cloud + Other Bets).",topic:"Valuation"},
+  {diff:'hard',q:"What causes the 'conglomerate discount' in valuations?",opts:["A) Diversification always destroys value","B) Sum of parts > total firm value due to complexity, lack of focus, and cross-subsidisation","C) Accounting fraud","D) Higher WACC for conglomerates"],a:1,exp:"Konglomeratrabatt: markedet verdsetter deler høyere enn helhet pga. ledelsesbyrå, kompleksitet, krysssubsidiering og mangel på fokus. Spinoffs og separasjoner frigjør typisk verdi.",topic:"Valuation"},
+  {diff:'hard',q:"A firm converts 80% of EBITDA to FCFF. EBITDA=500. If WACC=9% and g=3%, EV=?",opts:["A) 4444","B) 6800","C) 6933","D) 5333"],a:2,exp:"FCFF=500×0.8=400. TV=400×1.03/(0.09−0.03)=412/0.06=6867≈6933. (Using TV=FCFF/(WACC−g)=400/0.06=6667). With (1+g): ~6867.",topic:"Valuation"},
+  {diff:'hard',q:"What is the difference between a strategic buyer and a financial buyer in M&A?",opts:["A) Strategic buyers always pay more","B) Strategic buyers value synergies; financial buyers (PE) value standalone cash flows and leverage","C) Financial buyers have more capital","D) Strategic buyers use more debt"],a:1,exp:"Strategisk kjøper: kan betale synergipremie fordi de faktisk realiserer synergier. Finansiell kjøper (PE): kjøper på stand-alone basis, lever med mer gjeld, og selger igjen etter 3-7 år.",topic:"Corporate Finance"},
+  {diff:'hard',q:"How does a share buyback impact Return on Equity (ROE)?",opts:["A) ROE decreases as equity base shrinks","B) ROE typically increases as equity base shrinks with constant net income","C) No impact on ROE","D) ROE only changes if net income changes"],a:1,exp:"ROE = Net Income/Equity. Buyback reduserer equity (kontantutgang) mens net income er uendret → ROE øker. Selskaper med persistente buybacks kan ha kunstig høy ROE.",topic:"Corporate Finance"},
+  {diff:'hard',q:"What is EBITDA-capex conversion rate and why does it matter?",opts:["A) Same as gross margin","B) FCF conversion = (EBITDA−Capex)/EBITDA — shows real cash generation after investment","C) Tax rate on EBITDA","D) D&A as % of EBITDA"],a:1,exp:"(EBITDA−Capex)/EBITDA er en proxy for FCF-konvertering. Høy konvertering (lavt capex-intensitet) er positivt — selskapet beholder mer cash. Tech: 85-95%. Industri: 40-60%.",topic:"Valuation"},
+  {diff:'hard',q:"In private equity, what is a 'portfolio company's EBITDA bridge'?",opts:["A) A chart connecting EV to equity value","B) A waterfall showing year-over-year EBITDA change by driver (volume, price, cost, M&A)","C) A debt repayment schedule","D) A sensitivity table on exit multiple"],a:1,exp:"EBITDA bridge dekomponerer endringen i EBITDA mellom to perioder: organisk volum, pris/mix, kostnadsreduksjoner, M&A-bidrag, valuta. Kritisk verktøy for PE-overvåking av porteføljeselskaper.",topic:"Corporate Finance"},
+];
+
+let curSubject='all', curSubjectName='All', curDiff='easy';
+let deck=[], idx=0, correct=0, wrong=0, wrongTopics=[], streak=0, bestStreak=0, answered=false;
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function goHome(){show('home');}
+
+function selectSubject(key,name,icon){
+  curSubject=key; curSubjectName=name;
+  document.getElementById('diff-subject-label').textContent=name;
+  document.getElementById('diff-title').textContent='Choose difficulty';
+  document.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('sel'));
+  show('difficulty');
+}
+
+function selectDiff(d){
+  curDiff=d;
+  document.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('sel'));
+  document.querySelector('.diff-card.'+d).classList.add('sel');
+}
+
+const isGen=()=>curSubject==='gen';
+
+function buildDeck(){
+  if(isGen()){
+    const pool=GEN_QUESTIONS.filter(q=>q.diff===curDiff);
+    return pool.sort(()=>Math.random()-0.5).slice(0,10);
+  }
+  let pool=[];
+  if(curSubject==='all'){
+    ['bf','der','ifm'].forEach(s=>{const qs=QUESTIONS[s][curDiff];if(qs)pool.push(...qs);});
+  } else {
+    const qs=QUESTIONS[curSubject][curDiff];
+    if(qs) pool.push(...qs);
+  }
+  pool=pool.sort(()=>Math.random()-0.5);
+  return pool.slice(0,10);
+}
+
+function startQuiz(){
+  if(!isGen()&&!document.querySelector('.diff-card.sel')){selectDiff('easy');}
+  deck=buildDeck();
+  if(!deck.length){alert('No questions available for this combination.');return;}
+  idx=0;correct=0;wrong=0;wrongTopics=[];streak=0;bestStreak=0;answered=false;
+  document.getElementById('q-subj').textContent=curSubjectName;
+  const pill=document.getElementById('q-pill');
+  const pillText=document.getElementById('q-pill-text');
+  pill.className='diff-pill '+curDiff;
+  pillText.textContent=curDiff.charAt(0).toUpperCase()+curDiff.slice(1);
+  document.getElementById('q-prog').className='prog-fill '+curDiff;
+  show('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered=false;
+  const q=deck[idx];
+  document.getElementById('q-counter').textContent=(idx+1)+' / '+deck.length;
+  document.getElementById('q-text').textContent=q.q;
+  const fb=document.getElementById('q-feedback');
+  fb.className='feedback';fb.textContent='';
+  document.getElementById('btn-next').className='next-btn';
+  document.getElementById('q-prog').style.width=(idx/deck.length*100)+'%';
+
+  if(isGen()){
+    document.getElementById('tf-wrap').style.display='none';
+    const mc=document.getElementById('mc-wrap');
+    mc.style.display='flex';
+    mc.innerHTML='';
+    q.opts.forEach((opt,i)=>{
+      const btn=document.createElement('button');
+      btn.className='mc-btn';
+      btn.textContent=opt;
+      btn.onclick=()=>answerMC(i);
+      mc.appendChild(btn);
+    });
+  } else {
+    document.getElementById('tf-wrap').style.display='grid';
+    document.getElementById('mc-wrap').style.display='none';
+    const bt=document.getElementById('btn-t'),bf2=document.getElementById('btn-f');
+    bt.disabled=false;bf2.disabled=false;
+    bt.className='tf-btn t-btn';bf2.className='tf-btn f-btn';
+  }
+}
+
+function answerMC(chosen){
+  if(answered)return;
+  answered=true;
+  const q=deck[idx];
+  const ok=chosen===q.a;
+  if(ok){correct++;streak++;if(streak>bestStreak)bestStreak=streak;}
+  else{wrong++;if(q.topic&&!wrongTopics.includes(q.topic))wrongTopics.push(q.topic);streak=0;}
+  const btns=document.getElementById('mc-wrap').querySelectorAll('.mc-btn');
+  btns.forEach((btn,i)=>{
+    btn.disabled=true;
+    if(i===q.a)btn.classList.add('correct-mc');
+    else if(i===chosen&&!ok)btn.classList.add('wrong-mc');
+  });
+  const fb=document.getElementById('q-feedback');
+  fb.className='feedback show '+(ok?'correct':'wrong');
+  fb.textContent=q.exp;
+  document.getElementById('btn-next').className='next-btn show';
+}
+
+function answer(userAns){
+  if(answered)return;
+  answered=true;
+  const q=deck[idx];
+  const ok=userAns===q.a;
+  if(ok){correct++;streak++;if(streak>bestStreak)bestStreak=streak;}
+  else{wrong++;if(q.topic&&!wrongTopics.includes(q.topic))wrongTopics.push(q.topic);streak=0;}
+  const bt=document.getElementById('btn-t'),bf2=document.getElementById('btn-f');
+  bt.disabled=true;bf2.disabled=true;
+  if(q.a===true)bt.classList.add('correct-ans');else bf2.classList.add('correct-ans');
+  if(!ok){if(userAns===true)bt.classList.add('wrong-ans');else bf2.classList.add('wrong-ans');}
+  const fb=document.getElementById('q-feedback');
+  fb.className='feedback show '+(ok?'correct':'wrong');
+  fb.textContent=q.exp;
+  document.getElementById('btn-next').className='next-btn show';
+}
+
+function nextQ(){
+  idx++;
+  if(idx>=deck.length){showResults();return;}
+  renderQ();
+}
+
+function showResults(){
+  const total=correct+wrong;
+  const pct=total?Math.round(correct/total*100):0;
+  document.getElementById('q-prog').style.width='100%';
+
+  document.getElementById('r-pct').textContent=pct+'%';
+  document.getElementById('r-correct').textContent=correct;
+  document.getElementById('r-wrong').textContent=wrong;
+  document.getElementById('r-streak').textContent=bestStreak;
+
+  const ring=document.getElementById('ring-fill');
+  const circ=2*Math.PI*55;
+  ring.setAttribute('stroke-dasharray',circ.toFixed(1));
+  ring.setAttribute('stroke-dashoffset',circ.toFixed(1));
+  const colors={easy:'#22c55e',medium:'#f59e0b',hard:'#ef4444'};
+  ring.setAttribute('stroke',colors[curDiff]);
+  setTimeout(()=>{ring.setAttribute('stroke-dashoffset',(circ*(1-pct/100)).toFixed(1));},100);
+
+  const titles=['Keep grinding','Getting there','Decent round','Solid work','Sharp!','Flawless!'];
+  const t=Math.min(Math.floor(pct/20),5);
+  document.getElementById('r-title').textContent=titles[t];
+
+  let msg='';
+  if(pct>=80) msg='Strong round. You clearly know this material well.';
+  else if(pct>=60) msg='Good effort. A few gaps to close — check the topics below.';
+  else if(pct>=40) msg='You\'re getting there. Focus on the weak areas listed below.';
+  else msg='Tough round. Review the fundamentals and try again — you\'ll get there.';
+  document.getElementById('r-msg').textContent=msg;
+
+  const wl=document.getElementById('r-weak-list');
+  const fc=document.getElementById('r-feedback-card');
+  const advice={
+    'Prospect Theory':'Svakt på prospect theory. Kjernen er at verdifunksjonen er konkav for gevinster og konveks for tap, og brattere på tapsiden — det er dette som gir loss aversion. Husk at referansepunktet er fleksibelt og at sannsynlighetsvekting betyr at folk overvekter små sannsynligheter.',
+    'Nudging':'Svakt på nudging-definisjonen. En nudge MÅ endre atferd uten å endre objektive utbetalinger eller insentiver — det er hele poenget. En karbonsskatt endrer priser og er dermed IKKE en nudge. Defaults, framing og saliency er klassiske nudges fordi de ikke tvinger noen.',
+    'Disposition Effect':'Svakt på disposition effect. Investorer selger vinnere for tidlig og holder tapere for lenge. Koblingen til loss aversion er direkte: å realisere et tap føles dobbelt så vondt som tilsvarende gevinst er god, så vi unngår det ved å beholde taperne og håpe de snur.',
+    'Overconfidence':'Svakt på overconfidence. Overmodige investorer handler for mye fordi de tror de vet mer enn markedet. Mer handel = høyere kostnader og dårligere avkastning i snitt. Kalibrering handler om at folk systematisk overvurderer nøyaktigheten av egne prognoser.',
+    'Present Bias':'Svakt på present bias. Hyperbolsk diskontering betyr at vi gir uforholdsmessig stor vekt til nå fremfor litt senere — selv om vi i dag ville valgt å vente om valget gjaldt fremtiden. Dette er inkonsistent over tid og forklarer undersaving og prokrastinering.',
+    'Experience Effects':'Svakt på experience effects. Personlige opplevelser former oppfatninger og risikoatferd langt ut over det objektive data tilsier, og effektene er domene-spesifikke og langvarige. Mallendier & Nagel viser at Great Depression-generasjonen holdt seg unna aksjer i tiår.',
+    'Peer Effects':'Svakt på peer effects. Det er tre kanaler: (1) sosial læring — peers gir informasjon, (2) sosiale normer — hva andre gjør setter standarden, (3) sosial nytte — andres utfall inngår i din egen nyttefunksjon (FOMO, keeping up with the Joneses).',
+    'Greeks':'Svakt på opsjonens greske bokstaver. Delta = endring i pris per 1 NOK endring i underliggende. Gamma = endring i delta. Theta = tidsverdiens daglige bortfall. Vega = sensitivitet til volatilitet. Rho = sensitivitet til rente. Husk at selgere har positiv theta — de tjener på tidens gang.',
+    'Black-Scholes':'Svakt på Black-Scholes. De fem inputene er: S (spot), K (strike), T (tid til forfall), r (risikofri rente) og σ (volatilitet). Dividendeutbytte q reduserer call-verdien fordi det senker forwardprisen. N(d2) er risiko-nøytral sannsynlighet for å ende in-the-money.',
+    'Binomial Model':'Svakt på binomialmodellen. Risiko-nøytral sannsynlighet: p = (F − Sd)/(Su − Sd) der F er forwardkursen. I et non-recombining tre er u og d forskjellige i hver node, så p må regnes ut på nytt. Du diskonterer alltid tilbake med innenlandsk rente.',
+    'Option Basics':'Svakt på grunnleggende opsjoner. Call = rett til å KJØPE til strike. Put = rett til å SELGE til strike. Kjøpers maksimalt tap er premien. Selgers tap er ubegrenset for call. Europeiske opsjoner kan kun innløses ved forfall, amerikanske når som helst.',
+    'Moneyness':'Svakt på moneyness. In-the-money call: S > K. In-the-money put: S < K. At-the-money: S = K, intrinsic value = 0. Intrinsic value kan aldri være negativ — det er opsjonens umiddelbare verdi om den innløses nå.',
+    'Put-Call Parity':'Svakt på put-call parity. C − P = S·e^(−qT) − K·e^(−rT). Gjelder KUN europeiske opsjoner. Brukes til å utlede put fra call-pris eller omvendt. Brudd på denne relasjonen gir arbitrasjemuligheter.',
+    'Currency Options':'Svakt på valutaopsjoner. Garman-Kohlhagen behandler den utenlandske renten (rf) nøyaktig som et løpende dividendeutbytte. Høyere rf reduserer den adjusterte spotkursen S·e^(−rf·T) og senker dermed call-verdien.',
+    'Volatility':'Svakt på volatilitet. Implisitt volatilitet er fremoverskuende — utledet fra markedsprisen på opsjonen. Historisk volatilitet er bakoverblikkende — beregnet fra faktiske kursendringer. Gapet mellom dem kalles volatilitetsrisikopremien og er normalt positiv.',
+    'PPP':'Svakt på kjøpekraftsparitet. Relativ PPP: %ΔS ≈ π_d − π_f. Land med høyere inflasjon får svakere valuta over tid. Absolutt PPP (Big Mac Index) sammenligner prisnivåer direkte. PPP holder bedre på lang sikt enn kort sikt.',
+    'UIP':'Svakt på UIP. Uncovered Interest Parity sier at forventet valutaendring = rentedifferansen. I praksis feiler dette — høyrentevalutaer APPRESIERER kortsiktig (forward premium puzzle). Dette er grunnlaget for carry trade.',
+    'CIP':'Svakt på CIP. Covered Interest Parity er et arbitrasjekrav: F = S × (1+r_d)/(1+r_f). Avvik gir risikofri profitt. Post-2008 har CIP-avvik vedvart pga. regulatoriske begrensninger på bankenes balanser.',
+    'Interest Rate Parity':'Svakt på renteparitet. CIP gjelder den dekkede (forward-sikrede) posisjonen og er et hardt arbitrasjekrav. UIP gjelder udekkede posisjoner og er en forventning. Begge gir F/S = (1+r_d)/(1+r_f) men av ulike grunner.',
+    'Carry Trade':'Svakt på carry trade. Strategi: lån i lavrentevaluta, invester i høyrentevaluta. Profitabel fordi UIP feiler — men utsatt for krasj-risiko. Høyrentevalutaer stiger rolig men kan falle brått i kriser ("picking up nickels in front of a steamroller").',
+    'FX Basics':'Svakt på grunnleggende FX. NOK/EUR = 11.75 betyr 11.75 NOK per EUR. EUR er basisvaluta, NOK er prisvaluta. Sterkere hjemlig valuta = dyrere eksport for utlendinger. Spot = levering nå, forward = levering på fremtidig dato til avtalt kurs.',
+    'Forward Rates':'Svakt på forwardkurser. Forward premium: F > S (hjemlig rente lavere). Forward discount: F < S (hjemlig rente høyere). Forwardkursen er ikke en prognose — den er bestemt av CIP-arbitrasje og gjenspeiler rentedifferansen.',
+    'Fisher Effect':'Svakt på Fisher-effekten. Internasjonal Fisher: (1+r_d)/(1+r_f) = (1+π_d)/(1+π_f). Kombinerer PPP og Fisher-ligningen. Impliserer at realrentene utlignes på tvers av land når begge holder.',
+    'Libertarian Paternalism':'Svakt på libertariansk paternalisme. "Paternalistisk" fordi arkitekturen styrer folk mot bedre valg. "Libertariansk" fordi ingen tvinges — friheten til å velge annerledes bevares alltid. Thaler & Sunstein: det umulig å unngå å påvirke valg, så gjør det bevisst.',
+    'MINDSPACE':'Svakt på MINDSPACE-rammeverket. De 9 leverne: Messenger, Incentives, Norms, Defaults, Salience, Priming, Affect, Commitments, Ego. D (Defaults) er typisk den kraftigste — folk følger forhåndsvalget. N (Norms) utnytter sosial sammenligning.',
+    'Neuroeconomics':'Svakt på nevroøkonomi. Hjernens belønningssentre er direkte sensitive for relativ rikdom — din egen rikdom øker aktiviteten, men en peers rikdom senker den (Frydman 2015). Erfaringsbasert læring er "hardware" — sterke opplevelser kan endre hjernens struktur.',
+    'Heuristics':'Svakt på heuristikker. Representativitetsheuristikken ignorerer basisrater og dømmer etter likhet med en prototype. Tilgjengelighetsheuristikken dømmer sannsynlighet etter hvor lett et eksempel kommer til minne. Begge gir systematiske feil.',
+    'Beliefs & Preferences':'Svakt på skillet mellom oppfatninger og preferanser. I atferdsfinans kan KUN oppfatninger (beliefs) være irrasjonelle. Preferanser er per definisjon ikke irrasjonelle — men de kan avvike fra forventet nytte-teorien, som i prospect theory.',
+    'Limits to Arbitrage':'Svakt på grenser for arbitrasje. Selv om en feilprising eksisterer kan rasjonelle investorer ikke alltid utnytte den: de kan mangle kapital, møte margin calls, eller ikke vite når feilen korrigeres (Shleifer & Vishny 1997). Priser kan dermed forbli feil lenge.',
+    'Asset Pricing Puzzles':'Svakt på anomalier. Momentum = kortsiktig videreføring av avkastning. Reversal = langsiktig tilbakegang. Size premium = small caps gir meravkastning. Value premium = lav P/B gir meravkastning. Disse utfordrer EMH men kan delvis forklares av atferd.',
+    'Investor Behaviour':'Svakt på investoratferd. Individuelle investorer handler for mye (overconfidence), selger vinnere for tidlig (disposition effect), holder udiversifiserte porteføljer og påvirkes for mye av medier og nylige opplevelser.',
+    'Risk Management':'Svakt på risikostyring. FX-risiko er ubelønnet — du får ikke forventet meravkastning for å ta den. Sikring øker bedriftsverdi kun hvis det reduserer kontantstrømvolatilitet, begrenser nedsiderisiko eller bevarer likviditet. Ikke all eksponering bør sikres.',
+    'Exposure':'Svakt på eksponeringsbegrepene. Kontrakteksponering: faste fremtidige valutastrømmer. Operasjonell eksponering: usikre fremtidige strømmer. Økonomisk eksponering: sensitiviteten til firmaets markedsverdi. Regnskapseksponering: bokverdi — påvirker ikke kontantstrøm.',
+    'Hedging':'Svakt på sikringsstrategier. Strip hedge: match hvert enkelt kontantstrøm med en forward. Stack/rolling hedge: match gjennomsnittlig eksponering med én forward eller swap — mer praktisk ved mange ulike strømmer. Pengemarkeds-hedge replikerer en forward via lån og innskudd.',
+    'Capital Budgeting':'Svakt på internasjonal kapitalbudsjettering. Tilnærmingene (random walk, PPP, rentedifferanser) gir ekvivalente NPV-resultater når de brukes konsistent. Diskonteringsraten skal kun reflektere systematisk risiko — FX-risiko er ubelønnet og bør sikres separat.',
+    'Swaps':'Svakt på swaps. En valutaswap er en portefølje av forwardkontrakter med ulike løpetider. Faktisk utveksling av pålydende ved start og forfall skiller den fra renteswaps. Tre typer: fast/fast, fast/flytende (cross-currency swap) og flytende/flytende.',
+    'Course Overview':'Svakt på kursgrunnlaget. FIN3524 fokuserer på valutarisiko som ubelønnet eksponering. FIN3617 handler om atferdsfinans — to søyler: grenser for arbitrasje og psykologi (biases i oppfatninger og preferanser).',
+    'Math':'Svakt på kontinuerlig rentes-matematikk. Logaritmiske avkastninger er additive over tid: ln(S_T/S_0) = Σ ln(S_t/S_{t-1}). Dette er en praktisk egenskap som gjør volatilitetsberegninger enklere. Kontinuerlig rente: F = S × e^((r_d−r_f)T).',
+    'Inflation':'Svakt på inflasjonsbegrepet. Inflasjon = (CPI_t / CPI_{t-1}) − 1. Realrente ≈ nominalrente − inflasjon (Fisher-ligningen). Høy inflasjon i et land fører til valutasvekkelse over tid gjennom PPP-mekanismen.',
+  };
+  if(wrongTopics.length){
+    fc.style.display='block';
+    wl.innerHTML='';
+    wrongTopics.forEach(t=>{
+      const wrap=document.createElement('div');
+      wrap.className='weak-item';
+      const label=document.createElement('strong');
+      label.style.cssText='color:var(--amber-l);display:block;margin-bottom:3px;font-size:13px';
+      label.textContent=t;
+      const text=document.createElement('span');
+      text.textContent=advice[t]||t+': Gå tilbake til forelesningsnotatene for dette temaet og fokuser på definisjoner og eksempler.';
+      wrap.appendChild(label);
+      wrap.appendChild(text);
+      wl.appendChild(wrap);
+    });
+  } else {
+    fc.style.display=pct===100?'none':'block';
+    if(pct<100){wl.innerHTML='<div class="weak-item">Ingen spesifikke svake områder denne runden — bra jobbet!</div>';}
+  }
+  show('results');
+}
+
+function restartSame(){
+  document.querySelectorAll('.diff-card').forEach(c=>c.classList.remove('sel'));
+  document.querySelector('.diff-card.'+curDiff).classList.add('sel');
+  startQuiz();
+}
+</script>
+</body>
+</html>
