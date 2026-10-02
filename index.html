@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Subhan Butt — Finance student at BI Norwegian Business School"/>
+<meta name="description" content="Subhan Butt, MSc Finance student at Imperial College Business School"/>
 <title>Subhan Butt</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
@@ -80,7 +80,7 @@ section{padding:6rem 2.5rem;position:relative;z-index:1}
 .stat-value{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--gold)}
 
 /* PROJECTS */
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .project-card{background:var(--bg2);padding:2rem;position:relative;overflow:hidden;transition:background 0.2s;cursor:default;text-decoration:none;display:block;color:inherit}
 .project-card:hover{background:var(--bg3)}
 .project-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity 0.2s}
@@ -174,10 +174,11 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
   <div class="hero-content">
     <h1 class="hero-name">Subhan<br><em>Butt.</em></h1>
     <p class="hero-role">Finance Student & Analyst</p>
-    <p class="hero-desc">Second-year Finance bachelor at BI Norwegian Business School. I build financial models, compete in case competitions, and turn complex problems into clear decisions.</p>
+    <p class="hero-desc">MSc Finance student at Imperial College Business School, with a BSc in Finance from BI Norwegian Business School. I build financial models, compete in case competitions, and turn complex problems into clear decisions.</p>
     <div class="hero-actions">
       <a href="#projects" class="btn-primary">View my work</a>
       <a href="https://www.linkedin.com/in/subhan-butt-302a0b207" target="_blank" class="btn-secondary">LinkedIn →</a>
+      <a href="Subhan_Butt_CV.pdf" download class="btn-secondary">Download CV ↓</a>
     </div>
   </div>
   <p class="hero-scroll">Scroll to explore</p>
@@ -194,9 +195,9 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
   </div>
   <div class="about-grid">
     <div class="about-text reveal">
-      <p>I'm a third-year Finance student at <strong>BI Norwegian Business School</strong> with a GPA of 4.35/5. Currently working as an <strong>AML Analyst at KPMG Norway</strong>, where I conduct sanctions screenings, process transaction cases, and deliver regulatory risk assessments in line with international AML frameworks.</p>
-      <p>Previously I spent nearly two years as a <strong>Debt Advisor at Kredinor</strong>, handling complex cases with multi-million NOK outstanding balances and achieving a 55% agreement rate — 30% above the team average. Before that I worked as a <strong>Sales Representative at POWER</strong>, ranking among the top 20 national sellers of Telenor products.</p>
-      <p>Outside of work and studies I'm an active person with a background in <strong>martial arts</strong>, which has shaped the discipline and competitive mindset I bring to everything I do. I also compete in finance and strategy case competitions at national and international level.</p>
+      <p>I'm studying for an <strong>MSc in Finance at Imperial College Business School</strong> in London (2026 to 2027), focusing on advanced corporate finance, company valuation and private equity. I hold a <strong>BSc in Finance from BI Norwegian Business School</strong> with a GPA of 4.5/5, with A grades in Corporate Finance, Options and Futures, Financial Analysis and Valuation, and Quantitative Finance.</p>
+      <p>Alongside my bachelor's I worked as an <strong>AML Analyst at KPMG Norway</strong>, a <strong>Debt Advisor at Kredinor</strong>, where I secured repayment agreements in 55% of cases (about 30% above the team average), and a <strong>Client Advisor at Nordea</strong>, where I ranked among the top performers in a cohort of nearly 200.</p>
+      <p>I compete in finance case competitions, led analysts as Senior Analyst at <strong>BISO Invest</strong>, and manage a personal portfolio of Nordic equities and ETFs. On the side I build tools with code and AI, like the study apps below. Outside of finance: racket sports, martial arts, running and strength training.</p>
     </div>
     </div>
   </div>
@@ -213,10 +214,23 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
   </div>
   <div class="projects-grid">
 
-    <a class="project-card reveal" href="https://subhan3110.github.io/quanta" target="_blank">
+    <a class="project-card reveal" href="https://subhan3110.github.io/Drill400/" target="_blank">
       <div class="project-badge">Live</div>
       <div class="project-type">Web App</div>
-      <div class="project-title">Quanta — Finance Study App</div>
+      <div class="project-title">Drill 400: IB Interview Prep</div>
+      <div class="project-desc">Investment banking interview drills with 459 multiple choice questions across accounting, valuation, DCF, M&amp;A, LBO, restructuring and sectors, each with an explanation. Includes progress tracking, spaced repetition and serverless head-to-head multiplayer via shareable links.</div>
+      <div class="project-tags">
+        <span class="tag">HTML/CSS/JS</span>
+        <span class="tag">459 Questions</span>
+        <span class="tag">Multiplayer</span>
+      </div>
+      <span class="project-link">View project →</span>
+    </a>
+
+    <a class="project-card reveal reveal-delay-1" href="https://subhan3110.github.io/quanta" target="_blank">
+      <div class="project-badge">Live</div>
+      <div class="project-type">Web App</div>
+      <div class="project-title">Quanta: Finance Study App</div>
       <div class="project-desc">A mobile-optimised quiz app covering Behavioral Finance, Derivatives &amp; Options, and International Finance. 360+ questions across three difficulty levels with personalised feedback based on weak areas.</div>
       <div class="project-tags">
         <span class="tag">HTML/CSS/JS</span>
@@ -226,17 +240,28 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
       <span class="project-link">View project →</span>
     </a>
 
-    <a class="project-card reveal reveal-delay-1" href="Paretocomp.pptx" download="SATS_Equity_Research_Report.pptx">
-      <div class="project-type">Equity Research</div>
-      <div class="project-title">SATS Group — Investment Analysis</div>
-      <div class="project-desc">Full equity research analysis for Pareto Securities competition. Delivered a 15-slide investment presentation including bottom-up financial model, revenue decomposition, macro indicators, and investment thesis.</div>
+    <a class="project-card reveal" href="Paretocomp.pptx" download="SATS_Equity_Research_Report.pptx">
+      <div class="project-type">Equity Research · Feb 2026</div>
+      <div class="project-title">SATS: Pareto Securities Competition</div>
+      <div class="project-desc">Equity research analysis of SATS completed within 72 hours, ending in a buy recommendation and target price. Valued the company with DCF and trading comparables, with sensitivity analyses and a football field to stress-test the valuation range.</div>
       <div class="project-tags">
         <span class="tag">DCF Valuation</span>
-        <span class="tag">Financial Modelling</span>
-        <span class="tag">Bloomberg</span>
+        <span class="tag">Trading Comps</span>
+        <span class="tag">Football Field</span>
       </div>
-      <span class="project-link">View project →</span>
+      <span class="project-link">Download report ↓</span>
     </a>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-type">Case Competition · Apr 2025</div>
+      <div class="project-title">BioCirc: CBS Finance Competition</div>
+      <div class="project-desc">Buy-side case at Copenhagen Business School on TotalEnergies entering the Danish biogas market. Valued BioCirc at DKK 4.3bn EV (24.9x EV/EBITDA) and recommended a DKK 434m investment for a 10% stake, paired with CCS and Power-to-X joint ventures to limit downside.</div>
+      <div class="project-tags">
+        <span class="tag">M&amp;A</span>
+        <span class="tag">Valuation</span>
+        <span class="tag">Energy Transition</span>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -253,32 +278,62 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
   <div class="exp-list">
 
     <div class="exp-item reveal">
-      <div class="exp-date">Sep 2025<br>— Present</div>
+      <div class="exp-date">Sep 2026<br>— Sep 2027</div>
       <div class="exp-right">
-        <h3>AML Assistant</h3>
-        <div class="exp-company">KPMG AS</div>
-        <p>Conduct sanctions screenings against international watchlists. Process high volumes of transaction cases while consistently exceeding daily KPI targets. Deliver AML risk assessments and regulatory reviews in line with international AML frameworks.</p>
-        <span class="exp-highlight">Financial Crime · Regulatory Compliance</span>
+        <h3>MSc Finance</h3>
+        <div class="exp-company">Imperial College Business School, London</div>
+        <p>Modules include Advanced Corporate Finance, Advanced Company Valuation, Private Equity &amp; Venture Capital, and Mathematics for Finance.</p>
+        <span class="exp-highlight">Education</span>
       </div>
     </div>
 
     <div class="exp-item reveal">
-      <div class="exp-date">Jun 2024<br>— Dec 2025</div>
+      <div class="exp-date">May 2026<br>— Aug 2026</div>
+      <div class="exp-right">
+        <h3>Client Advisor</h3>
+        <div class="exp-company">Nordea Abp</div>
+        <p>Supported over 30 clients daily with savings, investment and pension enquiries, identifying their financial needs. Contributed several million NOK in net client inflows and received multiple performance awards.</p>
+        <span class="exp-highlight">Top performer in a cohort of ~200</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Sep 2025<br>— Aug 2026</div>
+      <div class="exp-right">
+        <h3>AML Analyst</h3>
+        <div class="exp-company">KPMG Norway</div>
+        <p>Screened over 200 high-risk entities against sanctions and PEP lists, escalating potential compliance risks for further investigation. Reviewed 20 to 30 transaction cases daily, consistently exceeding KPI targets while maintaining high quality.</p>
+        <span class="exp-highlight">Financial Crime · Sanctions Screening</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Jan 2026<br>— May 2026</div>
+      <div class="exp-right">
+        <h3>Senior Analyst</h3>
+        <div class="exp-company">BISO Invest</div>
+        <p>Led four junior analysts in identifying investment opportunities and conducting company research. Pitched TSMC to the investment board.</p>
+        <span class="exp-highlight">Leadership · Equity Research</span>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Jun 2024<br>— Aug 2026</div>
       <div class="exp-right">
         <h3>Debt Advisor</h3>
         <div class="exp-company">Kredinor AS</div>
-        <p>Handled complex customer cases involving multi-million NOK outstanding balances. Achieved agreement in over 55% of calls — 30% above team average. Delivered training and supported onboarding of new team members.</p>
+        <p>Managed complex cases involving outstanding balances of several million NOK, securing repayment agreements in 55% of cases. Trained new colleagues and supported them until they could manage cases independently.</p>
         <span class="exp-highlight">55% Agreement Rate · 30% Above Average</span>
       </div>
     </div>
 
     <div class="exp-item reveal">
-      <div class="exp-date">Jun 2023<br>— Present</div>
+      <div class="exp-date">Aug 2023<br>— May 2026</div>
       <div class="exp-right">
-        <h3>Sales Representative</h3>
-        <div class="exp-company">POWER</div>
-        <p>Ranked among the top 20 national sellers of Telenor products. Consistently achieved the highest sales figures in the department, winning multiple internal competitions and prizes.</p>
-        <span class="exp-highlight">Top 20 National · Highest Dept. Sales</span>
+        <h3>BSc Finance</h3>
+        <div class="exp-company">BI Norwegian Business School, Oslo</div>
+        <p>GPA 4.5/5. Ranked among the top five in Investments; A in Corporate Finance, Options and Futures, International Financial Management, Financial Analysis and Valuation, and Introduction to Quantitative Finance.</p>
+        <span class="exp-highlight">GPA 4.5 / 5</span>
       </div>
     </div>
 
@@ -300,8 +355,9 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
       <div class="skill-list">
         <div class="skill-item"><span class="skill-dot"></span>Financial modelling & valuation</div>
         <div class="skill-item"><span class="skill-dot"></span>DCF & comparable analysis</div>
+        <div class="skill-item"><span class="skill-dot"></span>Sensitivity & scenario analysis</div>
         <div class="skill-item"><span class="skill-dot"></span>Derivatives & options pricing</div>
-        <div class="skill-item"><span class="skill-dot"></span>AML & regulatory compliance</div>
+        <div class="skill-item"><span class="skill-dot"></span>AML & sanctions screening</div>
         <div class="skill-item"><span class="skill-dot"></span>Equity research</div>
       </div>
     </div>
@@ -311,8 +367,9 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
         <div class="skill-item"><span class="skill-dot"></span>Excel (advanced)</div>
         <div class="skill-item"><span class="skill-dot"></span>Bloomberg Terminal</div>
         <div class="skill-item"><span class="skill-dot"></span>PowerPoint (professional)</div>
+        <div class="skill-item"><span class="skill-dot"></span>Python & R</div>
         <div class="skill-item"><span class="skill-dot"></span>HTML / CSS / JavaScript</div>
-        <div class="skill-item"><span class="skill-dot"></span>Financial databases</div>
+        <div class="skill-item"><span class="skill-dot"></span>AI agents & automation</div>
       </div>
     </div>
     <div class="skill-group reveal reveal-delay-2">
@@ -351,7 +408,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
 </section>
 
 <footer>
-  <p class="footer-left">© 2026 Subhan Butt · Oslo, Norway</p>
+  <p class="footer-left">© 2026 Subhan Butt · London &amp; Oslo</p>
   <p class="footer-right">Built from scratch.</p>
 </footer>
 
