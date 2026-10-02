@@ -80,7 +80,7 @@ section{padding:6rem 2.5rem;position:relative;z-index:1}
 .stat-value{font-family:'Instrument Serif',serif;font-size:1.6rem;color:var(--gold)}
 
 /* PROJECTS */
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
 .project-card{background:var(--bg2);padding:2rem;position:relative;overflow:hidden;transition:background 0.2s;cursor:default;text-decoration:none;display:block;color:inherit}
 .project-card:hover{background:var(--bg3)}
 .project-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);opacity:0;transition:opacity 0.2s}
@@ -158,6 +158,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
   <a class="nav-logo" href="#">Subhan <span>Butt</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
+    <li><a href="#education">Education</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -195,11 +196,42 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
   </div>
   <div class="about-grid">
     <div class="about-text reveal">
-      <p>I'm studying for an <strong>MSc in Finance at Imperial College Business School</strong> in London (2026 to 2027), focusing on advanced corporate finance, company valuation and private equity. I hold a <strong>BSc in Finance from BI Norwegian Business School</strong> with a GPA of 4.5/5, with A grades in Corporate Finance, Options and Futures, Financial Analysis and Valuation, and Quantitative Finance.</p>
-      <p>Alongside my bachelor's I worked as an <strong>AML Analyst at KPMG Norway</strong>, a <strong>Debt Advisor at Kredinor</strong>, where I secured repayment agreements in 55% of cases (about 30% above the team average), and a <strong>Client Advisor at Nordea</strong>, where I ranked among the top performers in a cohort of nearly 200.</p>
-      <p>I compete in finance case competitions, led analysts as Senior Analyst at <strong>BISO Invest</strong>, and manage a personal portfolio of Nordic equities and ETFs. On the side I build tools with code and AI, like the study apps below. Outside of finance: racket sports, martial arts, running and strength training.</p>
+      <p>I grew up doing <strong>martial arts</strong>, and it shaped more than my fitness. It taught me discipline, how to stay calm under pressure, and how to keep showing up when progress is slow. That mindset is what I bring to my work and studies.</p>
+      <p>These days most of my time on court goes to <strong>padel</strong>, and I'm slowly trying my hand at <strong>tennis</strong>. Outside of racket sports I keep up with running and strength training.</p>
+      <p>I'm also curious about <strong>AI</strong> and like building small tools with it, such as the study apps below. And I follow the markets closely, managing my own portfolio of Nordic equities and ETFs.</p>
     </div>
     </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Education</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="exp-list">
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Sep 2026<br>— Sep 2027</div>
+      <div class="exp-right">
+        <h3>MSc Finance</h3>
+        <div class="exp-company">Imperial College Business School · London</div>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-date">Aug 2023<br>— May 2026</div>
+      <div class="exp-right">
+        <h3>BSc Finance</h3>
+        <div class="exp-company">BI Norwegian Business School · Oslo</div>
+        <span class="exp-highlight">GPA 4.5 / 5</span>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -208,7 +240,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
 <!-- PROJECTS -->
 <section id="projects">
   <div class="section-header reveal">
-    <span class="section-num">02</span>
+    <span class="section-num">03</span>
     <h2 class="section-title">Projects</h2>
     <div class="section-line"></div>
   </div>
@@ -252,17 +284,6 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
       <span class="project-link">Download report ↓</span>
     </a>
 
-    <div class="project-card reveal reveal-delay-1">
-      <div class="project-type">Case Competition · Apr 2025</div>
-      <div class="project-title">BioCirc: CBS Finance Competition</div>
-      <div class="project-desc">Buy-side case at Copenhagen Business School on TotalEnergies entering the Danish biogas market. Valued BioCirc at DKK 4.3bn EV (24.9x EV/EBITDA) and recommended a DKK 434m investment for a 10% stake, paired with CCS and Power-to-X joint ventures to limit downside.</div>
-      <div class="project-tags">
-        <span class="tag">M&amp;A</span>
-        <span class="tag">Valuation</span>
-        <span class="tag">Energy Transition</span>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -271,21 +292,11 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-header reveal">
-    <span class="section-num">03</span>
+    <span class="section-num">04</span>
     <h2 class="section-title">Experience</h2>
     <div class="section-line"></div>
   </div>
   <div class="exp-list">
-
-    <div class="exp-item reveal">
-      <div class="exp-date">Sep 2026<br>— Sep 2027</div>
-      <div class="exp-right">
-        <h3>MSc Finance</h3>
-        <div class="exp-company">Imperial College Business School, London</div>
-        <p>Modules include Advanced Corporate Finance, Advanced Company Valuation, Private Equity &amp; Venture Capital, and Mathematics for Finance.</p>
-        <span class="exp-highlight">Education</span>
-      </div>
-    </div>
 
     <div class="exp-item reveal">
       <div class="exp-date">May 2026<br>— Aug 2026</div>
@@ -327,16 +338,6 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
       </div>
     </div>
 
-    <div class="exp-item reveal">
-      <div class="exp-date">Aug 2023<br>— May 2026</div>
-      <div class="exp-right">
-        <h3>BSc Finance</h3>
-        <div class="exp-company">BI Norwegian Business School, Oslo</div>
-        <p>GPA 4.5/5. Ranked among the top five in Investments; A in Corporate Finance, Options and Futures, International Financial Management, Financial Analysis and Valuation, and Introduction to Quantitative Finance.</p>
-        <span class="exp-highlight">GPA 4.5 / 5</span>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -345,7 +346,7 @@ footer{padding:2rem 2.5rem;border-top:1px solid var(--border);display:flex;justi
 <!-- SKILLS -->
 <section id="skills">
   <div class="section-header reveal">
-    <span class="section-num">04</span>
+    <span class="section-num">05</span>
     <h2 class="section-title">Skills</h2>
     <div class="section-line"></div>
   </div>
